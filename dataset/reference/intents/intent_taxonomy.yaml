@@ -1,0 +1,140 @@
+# Automotive intent taxonomy for Meridian Assist.
+# escalation: true means the dialog manager routes this intent directly to a human queue.
+# llm_needed: none | cached | conditional | grounded
+version: 1
+intents:
+  - name: greeting
+    description: Customer opens the conversation with a greeting.
+    required_slots: []
+    handler: template
+    llm_needed: none
+    escalation: false
+
+  - name: goodbye
+    description: Customer is ending the conversation.
+    required_slots: []
+    handler: template
+    llm_needed: none
+    escalation: false
+
+  - name: thanks
+    description: Customer expresses thanks or satisfaction.
+    required_slots: []
+    handler: template
+    llm_needed: none
+    escalation: false
+
+  - name: recall_check
+    description: Customer wants to know if their vehicle has an open safety recall.
+    required_slots: [vehicle_or_vin]
+    handler: nhtsa_service
+    llm_needed: cached
+    escalation: false
+
+  - name: complaint_history
+    description: Customer wants to know about known issues or complaint trends for their vehicle.
+    required_slots: [vehicle]
+    handler: nhtsa_service
+    llm_needed: none
+    escalation: false
+
+  - name: book_service
+    description: Customer wants to schedule a service appointment.
+    required_slots: [service_type, vehicle, date_window, name, phone]
+    handler: scheduling_flow
+    llm_needed: none
+    escalation: false
+
+  - name: reschedule_appointment
+    description: Customer wants to move an existing appointment to a new time.
+    required_slots: [reference_code, phone]
+    handler: scheduling_flow
+    llm_needed: none
+    escalation: false
+
+  - name: cancel_appointment
+    description: Customer wants to cancel an existing appointment.
+    required_slots: [reference_code, phone]
+    handler: scheduling_flow
+    llm_needed: none
+    escalation: false
+
+  - name: appointment_status
+    description: Customer wants to check the status or details of an existing appointment.
+    required_slots: [reference_code_or_phone]
+    handler: db_lookup
+    llm_needed: none
+    escalation: false
+
+  - name: pricing_estimate
+    description: Customer wants a price range for a service.
+    required_slots: [service_type]
+    handler: catalog_lookup
+    llm_needed: none
+    escalation: false
+
+  - name: warranty_question
+    description: Customer has a free-text question about warranty coverage.
+    required_slots: []
+    handler: rag
+    llm_needed: grounded
+    escalation: false
+
+  - name: service_faq
+    description: Hours, loaner cars, payment options, or location questions.
+    required_slots: []
+    handler: rag_or_template
+    llm_needed: conditional
+    escalation: false
+
+  - name: parts_inquiry
+    description: Customer is asking about a specific part's availability or fitment.
+    required_slots: [part_or_service]
+    handler: catalog_lookup_escalation
+    llm_needed: none
+    escalation: false
+
+  - name: complaint
+    description: Customer is expressing dissatisfaction about service, staff, or billing.
+    required_slots: []
+    handler: escalation
+    llm_needed: none
+    escalation: true
+
+  - name: safety_concern
+    description: Customer describes a potential safety issue (brakes failing, smoke, airbag light, etc).
+    required_slots: []
+    handler: priority_escalation
+    llm_needed: none
+    escalation: true
+
+  - name: speak_to_human
+    description: Customer explicitly asks to talk to a person.
+    required_slots: []
+    handler: escalation
+    llm_needed: none
+    escalation: true
+
+  - name: out_of_scope
+    description: Request unrelated to automotive service (or unsupported).
+    required_slots: []
+    handler: deflection
+    llm_needed: none
+    escalation: false
+
+# Mapping from Bitext generic intents (D1) to the automotive taxonomy above.
+# Used by build_intents.py when folding D1 rows into the training set.
+bitext_intent_map:
+  contact_human_agent: speak_to_human
+  complaint: complaint
+  cancel_order: cancel_appointment
+  change_order: reschedule_appointment
+  payment_issue: service_faq
+  contact_customer_service: speak_to_human
+  delivery_period: appointment_status
+  check_cancellation_fee: cancel_appointment
+  get_refund: service_faq
+  edit_account: out_of_scope
+  registration_problems: out_of_scope
+  review: thanks
+  newsletter_subscription: out_of_scope

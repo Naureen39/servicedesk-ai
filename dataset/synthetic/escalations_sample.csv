@@ -1,0 +1,101 @@
+escalation_id,conversation_id,reason,priority,status,assigned_to,sla_due_at,created_at,resolved_at,summary
+ESC-000001,CONV-0016904,safety_concern,P1,resolved,Leah Sutherland,2025-10-21T17:07:00,2025-10-21T16:52:00,2025-10-21T16:59:00,Escalated safety concern conversation for follow-up.
+ESC-000002,CONV-0016905,safety_concern,P1,resolved,Trent Boyle,2026-01-25T15:58:00,2026-01-25T15:43:00,2026-01-25T15:50:00,Escalated safety concern conversation for follow-up.
+ESC-000003,CONV-0016908,book_service,P3,resolved,Karla Winters,2025-11-15T11:24:00,2025-11-14T11:24:00,2025-11-14T22:43:00,Escalated book service conversation for follow-up.
+ESC-000004,CONV-0016909,speak_to_human,P3,resolved,Trent Boyle,2025-12-29T13:15:00,2025-12-28T13:15:00,2025-12-28T15:03:00,Escalated speak to human conversation for follow-up.
+ESC-000005,CONV-0016911,service_faq,P3,resolved,Devon Marsh,2026-04-24T07:49:00,2026-04-23T07:49:00,2026-04-24T00:32:00,Escalated service faq conversation for follow-up.
+ESC-000006,CONV-0016912,warranty_question,P3,resolved,Devon Marsh,2026-03-23T13:32:00,2026-03-22T13:32:00,2026-03-23T00:33:00,Escalated warranty question conversation for follow-up.
+ESC-000007,CONV-0016913,safety_concern,P1,resolved,Yusuf Rahman,2026-02-04T13:07:00,2026-02-04T12:52:00,2026-02-04T13:02:00,Escalated safety concern conversation for follow-up.
+ESC-000008,CONV-0016916,complaint,P2,resolved,Trent Boyle,2026-03-25T20:46:00,2026-03-25T18:46:00,2026-03-25T20:09:00,Escalated complaint conversation for follow-up.
+ESC-000009,CONV-0016918,complaint,P2,open,Devon Marsh,2026-02-08T18:58:00,2026-02-08T16:58:00,,Escalated complaint conversation for follow-up.
+ESC-000010,CONV-0016919,pricing_estimate,P3,resolved,Leah Sutherland,2026-03-03T11:02:00,2026-03-02T11:02:00,2026-03-02T16:22:00,Escalated pricing estimate conversation for follow-up.
+ESC-000011,CONV-0016922,safety_concern,P1,resolved,Yusuf Rahman,2026-05-11T09:35:00,2026-05-11T09:20:00,2026-05-11T09:25:00,Escalated safety concern conversation for follow-up.
+ESC-000012,CONV-0016923,speak_to_human,P3,resolved,Simone Ashford,2026-09-08T17:18:00,2026-09-07T17:18:00,2026-09-08T09:25:00,Escalated speak to human conversation for follow-up.
+ESC-000013,CONV-0016924,pricing_estimate,P3,open,Paige Donnelly,2025-12-18T12:14:00,2025-12-17T12:14:00,,Escalated pricing estimate conversation for follow-up.
+ESC-000014,CONV-0016925,speak_to_human,P3,resolved,Miguel Ortiz,2026-04-29T20:55:00,2026-04-28T20:55:00,2026-04-29T06:55:00,Escalated speak to human conversation for follow-up.
+ESC-000015,CONV-0016927,complaint,P2,resolved,Paige Donnelly,2026-07-25T13:55:00,2026-07-25T11:55:00,2026-07-25T12:25:00,Escalated complaint conversation for follow-up.
+ESC-000016,CONV-0016930,service_faq,P3,resolved,Simone Ashford,2026-01-30T12:47:00,2026-01-29T12:47:00,2026-01-30T12:15:00,Escalated service faq conversation for follow-up.
+ESC-000017,CONV-0016931,speak_to_human,P3,open,Leah Sutherland,2026-06-20T16:41:00,2026-06-19T16:41:00,,Escalated speak to human conversation for follow-up.
+ESC-000018,CONV-0016933,recall_check,P3,resolved,Karla Winters,2026-04-15T14:48:00,2026-04-14T14:48:00,2026-04-15T12:34:00,Escalated recall check conversation for follow-up.
+ESC-000019,CONV-0016938,pricing_estimate,P3,resolved,Devon Marsh,2026-04-05T21:03:00,2026-04-04T21:03:00,2026-04-05T11:43:00,Escalated pricing estimate conversation for follow-up.
+ESC-000020,CONV-0016940,pricing_estimate,P3,resolved,Devon Marsh,2026-06-30T10:50:00,2026-06-29T10:50:00,2026-06-29T12:32:00,Escalated pricing estimate conversation for follow-up.
+ESC-000021,CONV-0016941,service_faq,P3,resolved,Trent Boyle,2026-04-13T06:32:00,2026-04-12T06:32:00,2026-04-13T06:11:00,Escalated service faq conversation for follow-up.
+ESC-000022,CONV-0016943,recall_check,P3,resolved,Miguel Ortiz,2026-06-09T18:28:00,2026-06-08T18:28:00,2026-06-08T23:46:00,Escalated recall check conversation for follow-up.
+ESC-000023,CONV-0016946,pricing_estimate,P3,open,Simone Ashford,2026-04-27T07:42:00,2026-04-26T07:42:00,,Escalated pricing estimate conversation for follow-up.
+ESC-000024,CONV-0016947,safety_concern,P1,resolved,Leah Sutherland,2026-07-04T13:31:00,2026-07-04T13:16:00,2026-07-04T13:23:00,Escalated safety concern conversation for follow-up.
+ESC-000025,CONV-0016950,complaint,P2,resolved,Paige Donnelly,2025-11-28T22:41:00,2025-11-28T20:41:00,2025-11-28T21:08:00,Escalated complaint conversation for follow-up.
+ESC-000026,CONV-0016952,recall_check,P3,resolved,Devon Marsh,2026-03-07T07:54:00,2026-03-06T07:54:00,2026-03-06T11:30:00,Escalated recall check conversation for follow-up.
+ESC-000027,CONV-0016953,service_faq,P3,resolved,Trent Boyle,2025-11-16T13:04:00,2025-11-15T13:04:00,2025-11-16T01:41:00,Escalated service faq conversation for follow-up.
+ESC-000028,CONV-0016955,complaint,P2,resolved,Yusuf Rahman,2026-01-26T14:47:00,2026-01-26T12:47:00,2026-01-26T13:04:00,Escalated complaint conversation for follow-up.
+ESC-000029,CONV-0016957,speak_to_human,P3,resolved,Trent Boyle,2025-11-07T17:32:00,2025-11-06T17:32:00,2025-11-07T15:34:00,Escalated speak to human conversation for follow-up.
+ESC-000030,CONV-0016958,complaint,P2,open,Leah Sutherland,2025-10-30T10:49:00,2025-10-30T08:49:00,,Escalated complaint conversation for follow-up.
+ESC-000031,CONV-0016959,complaint,P2,resolved,Karla Winters,2026-01-09T10:48:00,2026-01-09T08:48:00,2026-01-09T10:42:00,Escalated complaint conversation for follow-up.
+ESC-000032,CONV-0016960,complaint,P2,open,Simone Ashford,2026-08-03T20:32:00,2026-08-03T18:32:00,,Escalated complaint conversation for follow-up.
+ESC-000033,CONV-0016962,recall_check,P3,resolved,Karla Winters,2025-09-26T07:42:00,2025-09-25T07:42:00,2025-09-25T22:55:00,Escalated recall check conversation for follow-up.
+ESC-000034,CONV-0016964,service_faq,P3,resolved,Yusuf Rahman,2026-09-19T15:51:00,2026-09-18T15:51:00,2026-09-19T02:05:00,Escalated service faq conversation for follow-up.
+ESC-000035,CONV-0016967,recall_check,P3,open,Devon Marsh,2026-07-08T19:49:00,2026-07-07T19:49:00,,Escalated recall check conversation for follow-up.
+ESC-000036,CONV-0016969,warranty_question,P3,resolved,Simone Ashford,2026-01-18T16:07:00,2026-01-17T16:07:00,2026-01-18T00:50:00,Escalated warranty question conversation for follow-up.
+ESC-000037,CONV-0016971,speak_to_human,P3,resolved,Simone Ashford,2025-10-08T09:44:00,2025-10-07T09:44:00,2025-10-08T06:56:00,Escalated speak to human conversation for follow-up.
+ESC-000038,CONV-0016972,safety_concern,P1,resolved,Yusuf Rahman,2026-09-09T10:55:00,2026-09-09T10:40:00,2026-09-09T10:47:00,Escalated safety concern conversation for follow-up.
+ESC-000039,CONV-0016973,speak_to_human,P3,resolved,Paige Donnelly,2026-03-23T11:34:00,2026-03-22T11:34:00,2026-03-22T16:31:00,Escalated speak to human conversation for follow-up.
+ESC-000040,CONV-0016974,warranty_question,P3,resolved,Simone Ashford,2026-04-14T12:09:00,2026-04-13T12:09:00,2026-04-14T09:58:00,Escalated warranty question conversation for follow-up.
+ESC-000041,CONV-0016976,safety_concern,P1,resolved,Devon Marsh,2026-09-10T12:00:00,2026-09-10T11:45:00,2026-09-10T11:53:00,Escalated safety concern conversation for follow-up.
+ESC-000042,CONV-0016978,complaint,P2,resolved,Trent Boyle,2026-03-02T22:07:00,2026-03-02T20:07:00,2026-03-02T22:03:00,Escalated complaint conversation for follow-up.
+ESC-000043,CONV-0016979,safety_concern,P1,resolved,Karla Winters,2026-06-22T22:12:00,2026-06-22T21:57:00,2026-06-22T22:07:00,Escalated safety concern conversation for follow-up.
+ESC-000044,CONV-0016982,safety_concern,P1,resolved,Miguel Ortiz,2026-01-27T09:15:00,2026-01-27T09:00:00,2026-01-27T09:05:00,Escalated safety concern conversation for follow-up.
+ESC-000045,CONV-0016983,service_faq,P3,resolved,Karla Winters,2026-08-10T19:23:00,2026-08-09T19:23:00,2026-08-10T08:13:00,Escalated service faq conversation for follow-up.
+ESC-000046,CONV-0016984,safety_concern,P1,open,Paige Donnelly,2026-03-21T19:25:00,2026-03-21T19:10:00,,Escalated safety concern conversation for follow-up.
+ESC-000047,CONV-0016985,service_faq,P3,resolved,Devon Marsh,2025-10-25T15:10:00,2025-10-24T15:10:00,2025-10-25T06:18:00,Escalated service faq conversation for follow-up.
+ESC-000048,CONV-0016989,safety_concern,P1,resolved,Devon Marsh,2026-09-09T14:09:00,2026-09-09T13:54:00,2026-09-09T14:00:00,Escalated safety concern conversation for follow-up.
+ESC-000049,CONV-0016994,pricing_estimate,P3,resolved,Paige Donnelly,2026-06-29T07:46:00,2026-06-28T07:46:00,2026-06-29T04:00:00,Escalated pricing estimate conversation for follow-up.
+ESC-000050,CONV-0016997,complaint,P2,resolved,Trent Boyle,2026-06-26T12:49:00,2026-06-26T10:49:00,2026-06-26T12:25:00,Escalated complaint conversation for follow-up.
+ESC-000051,CONV-0016998,speak_to_human,P3,resolved,Yusuf Rahman,2026-04-09T11:37:00,2026-04-08T11:37:00,2026-04-09T06:52:00,Escalated speak to human conversation for follow-up.
+ESC-000052,CONV-0017001,safety_concern,P1,resolved,Yusuf Rahman,2026-02-19T13:16:00,2026-02-19T13:01:00,2026-02-19T13:14:00,Escalated safety concern conversation for follow-up.
+ESC-000053,CONV-0017002,recall_check,P3,resolved,Devon Marsh,2026-08-13T08:50:00,2026-08-12T08:50:00,2026-08-13T02:12:00,Escalated recall check conversation for follow-up.
+ESC-000054,CONV-0017003,warranty_question,P3,resolved,Devon Marsh,2026-01-17T18:50:00,2026-01-16T18:50:00,2026-01-17T11:15:00,Escalated warranty question conversation for follow-up.
+ESC-000055,CONV-0017005,recall_check,P3,resolved,Devon Marsh,2025-12-29T17:34:00,2025-12-28T17:34:00,2025-12-29T11:16:00,Escalated recall check conversation for follow-up.
+ESC-000056,CONV-0017006,service_faq,P3,resolved,Karla Winters,2026-03-27T20:43:00,2026-03-26T20:43:00,2026-03-27T18:39:00,Escalated service faq conversation for follow-up.
+ESC-000057,CONV-0017007,speak_to_human,P3,open,Karla Winters,2026-01-12T06:35:00,2026-01-11T06:35:00,,Escalated speak to human conversation for follow-up.
+ESC-000058,CONV-0017010,complaint,P2,resolved,Simone Ashford,2026-05-11T19:24:00,2026-05-11T17:24:00,2026-05-11T18:58:00,Escalated complaint conversation for follow-up.
+ESC-000059,CONV-0017013,recall_check,P3,resolved,Karla Winters,2025-11-15T12:26:00,2025-11-14T12:26:00,2025-11-14T16:56:00,Escalated recall check conversation for follow-up.
+ESC-000060,CONV-0017016,complaint,P2,resolved,Yusuf Rahman,2026-07-02T16:32:00,2026-07-02T14:32:00,2026-07-02T15:33:00,Escalated complaint conversation for follow-up.
+ESC-000061,CONV-0017017,warranty_question,P3,resolved,Trent Boyle,2026-08-23T06:33:00,2026-08-22T06:33:00,2026-08-22T20:27:00,Escalated warranty question conversation for follow-up.
+ESC-000062,CONV-0017018,speak_to_human,P3,resolved,Simone Ashford,2026-08-05T17:52:00,2026-08-04T17:52:00,2026-08-04T21:25:00,Escalated speak to human conversation for follow-up.
+ESC-000063,CONV-0017021,complaint,P2,resolved,Paige Donnelly,2026-04-18T12:19:00,2026-04-18T10:19:00,2026-04-18T12:09:00,Escalated complaint conversation for follow-up.
+ESC-000064,CONV-0017024,safety_concern,P1,resolved,Paige Donnelly,2026-01-28T20:39:00,2026-01-28T20:24:00,2026-01-28T20:35:00,Escalated safety concern conversation for follow-up.
+ESC-000065,CONV-0017025,service_faq,P3,resolved,Trent Boyle,2026-07-20T19:42:00,2026-07-19T19:42:00,2026-07-20T09:22:00,Escalated service faq conversation for follow-up.
+ESC-000066,CONV-0017026,pricing_estimate,P3,resolved,Trent Boyle,2025-12-25T06:38:00,2025-12-24T06:38:00,2025-12-24T16:07:00,Escalated pricing estimate conversation for follow-up.
+ESC-000067,CONV-0017027,complaint,P2,resolved,Trent Boyle,2026-01-15T14:17:00,2026-01-15T12:17:00,2026-01-15T12:50:00,Escalated complaint conversation for follow-up.
+ESC-000068,CONV-0017028,warranty_question,P3,resolved,Leah Sutherland,2026-01-25T06:56:00,2026-01-24T06:56:00,2026-01-24T22:23:00,Escalated warranty question conversation for follow-up.
+ESC-000069,CONV-0017029,service_faq,P3,resolved,Trent Boyle,2026-01-06T17:35:00,2026-01-05T17:35:00,2026-01-06T07:21:00,Escalated service faq conversation for follow-up.
+ESC-000070,CONV-0017032,pricing_estimate,P3,resolved,Karla Winters,2025-11-29T20:58:00,2025-11-28T20:58:00,2025-11-29T14:52:00,Escalated pricing estimate conversation for follow-up.
+ESC-000071,CONV-0017038,warranty_question,P3,resolved,Trent Boyle,2025-10-24T20:30:00,2025-10-23T20:30:00,2025-10-24T06:29:00,Escalated warranty question conversation for follow-up.
+ESC-000072,CONV-0017040,speak_to_human,P3,resolved,Simone Ashford,2026-06-08T16:06:00,2026-06-07T16:06:00,2026-06-08T09:21:00,Escalated speak to human conversation for follow-up.
+ESC-000073,CONV-0017043,recall_check,P3,resolved,Miguel Ortiz,2025-10-20T14:03:00,2025-10-19T14:03:00,2025-10-19T21:00:00,Escalated recall check conversation for follow-up.
+ESC-000074,CONV-0017044,pricing_estimate,P3,open,Simone Ashford,2026-07-23T10:08:00,2026-07-22T10:08:00,,Escalated pricing estimate conversation for follow-up.
+ESC-000075,CONV-0017045,safety_concern,P1,resolved,Yusuf Rahman,2026-01-08T08:14:00,2026-01-08T07:59:00,2026-01-08T08:09:00,Escalated safety concern conversation for follow-up.
+ESC-000076,CONV-0017046,safety_concern,P1,resolved,Leah Sutherland,2026-08-04T07:52:00,2026-08-04T07:37:00,2026-08-04T07:50:00,Escalated safety concern conversation for follow-up.
+ESC-000077,CONV-0017049,service_faq,P3,resolved,Miguel Ortiz,2025-12-24T09:59:00,2025-12-23T09:59:00,2025-12-23T15:43:00,Escalated service faq conversation for follow-up.
+ESC-000078,CONV-0017050,warranty_question,P3,resolved,Paige Donnelly,2026-01-13T17:33:00,2026-01-12T17:33:00,2026-01-13T02:40:00,Escalated warranty question conversation for follow-up.
+ESC-000079,CONV-0017054,speak_to_human,P3,resolved,Leah Sutherland,2025-12-31T08:10:00,2025-12-30T08:10:00,2025-12-30T10:06:00,Escalated speak to human conversation for follow-up.
+ESC-000080,CONV-0017057,complaint,P2,resolved,Devon Marsh,2026-01-25T08:20:00,2026-01-25T06:20:00,2026-01-25T07:18:00,Escalated complaint conversation for follow-up.
+ESC-000081,CONV-0017059,recall_check,P3,resolved,Devon Marsh,2025-11-03T13:20:00,2025-11-02T13:20:00,2025-11-03T09:38:00,Escalated recall check conversation for follow-up.
+ESC-000082,CONV-0017062,pricing_estimate,P3,resolved,Paige Donnelly,2025-12-28T15:24:00,2025-12-27T15:24:00,2025-12-28T04:02:00,Escalated pricing estimate conversation for follow-up.
+ESC-000083,CONV-0017063,safety_concern,P1,resolved,Yusuf Rahman,2026-02-22T20:14:00,2026-02-22T19:59:00,2026-02-22T20:12:00,Escalated safety concern conversation for follow-up.
+ESC-000084,CONV-0017072,speak_to_human,P3,resolved,Trent Boyle,2026-03-01T08:48:00,2026-02-28T08:48:00,2026-02-28T10:49:00,Escalated speak to human conversation for follow-up.
+ESC-000085,CONV-0017073,safety_concern,P1,resolved,Paige Donnelly,2026-06-27T08:39:00,2026-06-27T08:24:00,2026-06-27T08:31:00,Escalated safety concern conversation for follow-up.
+ESC-000086,CONV-0017074,safety_concern,P1,resolved,Paige Donnelly,2026-06-02T20:36:00,2026-06-02T20:21:00,2026-06-02T20:27:00,Escalated safety concern conversation for follow-up.
+ESC-000087,CONV-0017075,recall_check,P3,resolved,Paige Donnelly,2025-09-28T20:46:00,2025-09-27T20:46:00,2025-09-28T05:38:00,Escalated recall check conversation for follow-up.
+ESC-000088,CONV-0017080,book_service,P3,open,Trent Boyle,2026-08-05T06:06:00,2026-08-04T06:06:00,,Escalated book service conversation for follow-up.
+ESC-000089,CONV-0017082,recall_check,P3,resolved,Karla Winters,2026-03-20T21:43:00,2026-03-19T21:43:00,2026-03-20T01:51:00,Escalated recall check conversation for follow-up.
+ESC-000090,CONV-0017083,safety_concern,P1,resolved,Trent Boyle,2026-02-28T18:27:00,2026-02-28T18:12:00,2026-02-28T18:21:00,Escalated safety concern conversation for follow-up.
+ESC-000091,CONV-0017085,safety_concern,P1,resolved,Karla Winters,2025-10-02T09:08:00,2025-10-02T08:53:00,2025-10-02T08:58:00,Escalated safety concern conversation for follow-up.
+ESC-000092,CONV-0017086,speak_to_human,P3,resolved,Leah Sutherland,2025-12-10T16:14:00,2025-12-09T16:14:00,2025-12-10T00:03:00,Escalated speak to human conversation for follow-up.
+ESC-000093,CONV-0017088,complaint,P2,resolved,Paige Donnelly,2025-09-29T14:52:00,2025-09-29T12:52:00,2025-09-29T14:01:00,Escalated complaint conversation for follow-up.
+ESC-000094,CONV-0017091,complaint,P2,resolved,Paige Donnelly,2026-01-19T11:29:00,2026-01-19T09:29:00,2026-01-19T10:38:00,Escalated complaint conversation for follow-up.
+ESC-000095,CONV-0017092,recall_check,P3,open,Karla Winters,2025-10-07T09:58:00,2025-10-06T09:58:00,,Escalated recall check conversation for follow-up.
+ESC-000096,CONV-0017096,complaint,P2,resolved,Yusuf Rahman,2026-03-13T09:59:00,2026-03-13T07:59:00,2026-03-13T09:19:00,Escalated complaint conversation for follow-up.
+ESC-000097,CONV-0017097,speak_to_human,P3,resolved,Devon Marsh,2025-11-09T18:15:00,2025-11-08T18:15:00,2025-11-09T14:56:00,Escalated speak to human conversation for follow-up.
+ESC-000098,CONV-0017098,complaint,P2,resolved,Paige Donnelly,2026-07-23T18:05:00,2026-07-23T16:05:00,2026-07-23T16:44:00,Escalated complaint conversation for follow-up.
+ESC-000099,CONV-0017099,pricing_estimate,P3,open,Leah Sutherland,2025-12-28T09:07:00,2025-12-27T09:07:00,,Escalated pricing estimate conversation for follow-up.
+ESC-000100,CONV-0017101,pricing_estimate,P3,resolved,Simone Ashford,2026-02-23T06:43:00,2026-02-22T06:43:00,2026-02-23T05:15:00,Escalated pricing estimate conversation for follow-up.

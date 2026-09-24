@@ -1,0 +1,4 @@
+location_id,name,address,city,state,zip,latitude,longitude,timezone,bay_count,phone,mon_open,mon_close,tue_open,tue_close,wed_open,wed_close,thu_open,thu_close,fri_open,fri_close,sat_open,sat_close,sun_open,sun_close
+1,Meridian Auto Group - Riverside,4200 Riverside Pkwy,Columbus,OH,43215,39.9612,-82.9988,America/New_York,14,614-555-0142,07:00,18:00,07:00,18:00,07:00,18:00,07:00,18:00,07:00,18:00,08:00,15:00,,
+2,Meridian Auto Group - Northgate,880 Northgate Blvd,Columbus,OH,43229,40.0631,-82.9776,America/New_York,12,614-555-0198,07:00,18:00,07:00,18:00,07:00,18:00,07:00,18:00,07:00,18:00,08:00,15:00,,
+3,Meridian Auto Group - Westerville,150 Westerville Sq,Westerville,OH,43081,40.1261,-82.9291,America/New_York,8,614-555-0231,07:30,17:30,07:30,17:30,07:30,17:30,07:30,17:30,07:30,17:30,08:00,14:00,,

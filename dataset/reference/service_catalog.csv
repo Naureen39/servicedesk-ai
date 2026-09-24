@@ -1,0 +1,25 @@
+code,name,category,labor_hours_min,labor_hours_max,parts_cost_min,parts_cost_max,duration_min,bay_type,skill_level
+OIL-CONV,Conventional Oil Change,Maintenance,0.4,0.5,25,40,30,general,C
+OIL-SYN,Synthetic Oil Change,Maintenance,0.4,0.5,55,85,30,general,C
+TIRE-ROT,Tire Rotation,Tires,0.4,0.5,0,0,30,general,C
+TIRE-REP,Tire Repair (Puncture),Tires,0.5,0.8,15,30,45,general,C
+TIRE-REPL,Tire Replacement (Set of 4),Tires,1.0,1.5,400,900,90,general,B
+BRAKE-PAD-F,Front Brake Pad Replacement,Brakes,1.5,2.0,90,180,120,lift,B
+BRAKE-PAD-R,Rear Brake Pad Replacement,Brakes,1.5,2.0,90,180,120,lift,B
+BRAKE-ROTOR,Brake Rotor Resurface/Replace,Brakes,2.0,2.5,150,320,150,lift,B
+SVC-60K,60K Mile Scheduled Service,Maintenance,3.0,3.5,180,420,210,lift,A
+SVC-30K,30K Mile Scheduled Service,Maintenance,2.0,2.5,120,280,150,lift,B
+SVC-90K,90K Mile Scheduled Service,Maintenance,3.5,4.0,220,520,240,lift,A
+DIAG-CEL,Check Engine Light Diagnostics,Diagnostics,0.8,1.0,0,0,60,diagnostic,A
+DIAG-NOISE,Noise / Vibration Diagnostics,Diagnostics,0.8,1.2,0,0,75,diagnostic,A
+AC-SVC,AC System Service and Recharge,Climate Control,1.2,1.5,60,140,90,general,B
+AC-REPAIR,AC Compressor Repair,Climate Control,2.5,3.5,300,650,210,lift,A
+TRANS-SVC,Transmission Fluid Service,Transmission,1.8,2.0,90,180,120,lift,B
+BATTERY-REPL,Battery Replacement and Test,Electrical,0.4,0.6,120,220,30,general,C
+ALT-REPL,Alternator Replacement,Electrical,1.5,2.0,220,420,120,lift,A
+ALIGN-4W,Four-Wheel Alignment,Suspension,1.0,1.2,0,0,60,alignment,B
+SUSP-STRUT,Strut/Shock Replacement,Suspension,2.0,3.0,240,520,180,lift,A
+WIPER-REPL,Wiper Blade Replacement,Maintenance,0.2,0.3,20,45,15,general,C
+COOLANT-FLUSH,Coolant System Flush,Maintenance,0.8,1.0,40,90,60,general,C
+RECALL-SVC,Recall Campaign Service,Recall,0.5,2.5,0,0,90,general,B
+STATE-INSP,State Safety/Emissions Inspection,Inspection,0.5,0.7,0,25,45,general,C

@@ -1,0 +1,31 @@
+part_no,description,cost,list_price,category
+OIL-5W30-5Q,Conventional Motor Oil 5W-30 (5 qt kit),18.00,32.00,Fluids
+OIL-SYN-0W20-5Q,Full Synthetic Motor Oil 0W-20 (5 qt kit),38.00,68.00,Fluids
+FILTER-OIL-STD,Standard Oil Filter,4.50,9.00,Filters
+FILTER-AIR-ENG,Engine Air Filter,9.00,22.00,Filters
+FILTER-CABIN,Cabin Air Filter,8.00,20.00,Filters
+BRAKE-PAD-SET-F,Front Brake Pad Set,42.00,95.00,Brakes
+BRAKE-PAD-SET-R,Rear Brake Pad Set,38.00,88.00,Brakes
+BRAKE-ROTOR-EA,Brake Rotor (each),35.00,78.00,Brakes
+BRAKE-FLUID-DOT4,Brake Fluid DOT 4 (1 L),6.00,14.00,Fluids
+TIRE-ALLSEASON-16,All-Season Tire 16 in (each),85.00,145.00,Tires
+TIRE-ALLSEASON-17,All-Season Tire 17 in (each),98.00,168.00,Tires
+TIRE-ALLSEASON-18,All-Season Tire 18 in (each),115.00,195.00,Tires
+TIRE-PATCH-KIT,Tire Puncture Repair Kit,4.00,12.00,Tires
+BATTERY-GRP35,Automotive Battery Group 35,88.00,165.00,Electrical
+BATTERY-GRP48,Automotive Battery Group 48,95.00,178.00,Electrical
+ALTERNATOR-STD,Remanufactured Alternator,165.00,340.00,Electrical
+SPARK-PLUG-EA,Spark Plug (each),6.50,14.00,Engine
+COOLANT-OAT-1G,Extended Life Coolant OAT (1 gal),16.00,32.00,Fluids
+TRANS-FLUID-ATF-1Q,Automatic Transmission Fluid (1 qt),9.00,18.00,Fluids
+AC-REFRIGERANT-R134A,AC Refrigerant R-134a (canister),22.00,44.00,Climate Control
+AC-COMPRESSOR,AC Compressor Assembly,220.00,480.00,Climate Control
+STRUT-ASSY-EA,Strut Assembly (each),140.00,290.00,Suspension
+WIPER-BLADE-EA,Wiper Blade (each),14.00,28.00,Maintenance
+SERPENTINE-BELT,Serpentine Drive Belt,22.00,48.00,Engine
+FUEL-FILTER,Fuel Filter,12.00,26.00,Filters
+BULB-HEADLIGHT,Headlight Bulb (each),9.00,20.00,Electrical
+WHEEL-BEARING,Wheel Bearing Assembly (each),58.00,130.00,Suspension
+CV-AXLE,CV Axle Shaft (each),85.00,175.00,Suspension
+THERMOSTAT,Engine Thermostat,14.00,32.00,Engine
+BATTERY-TERMINAL,Battery Terminal Clamp,3.50,9.00,Electrical

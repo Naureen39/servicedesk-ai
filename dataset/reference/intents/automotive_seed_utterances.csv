@@ -1,0 +1,172 @@
+intent,utterance
+greeting,hi there
+greeting,hello
+greeting,hey
+greeting,good morning
+greeting,good afternoon
+greeting,is anyone there
+greeting,hi I have a question about my car
+greeting,hey can you help me
+greeting,hello Meridian
+greeting,hiya
+greeting,morning
+greeting,hey there quick question
+greeting,uh hi
+greeting,hello is this the service desk
+greeting,hi I need some help
+goodbye,bye
+goodbye,goodbye
+goodbye,that's all thanks
+goodbye,ok bye now
+goodbye,see you later
+goodbye,thats all I needed bye
+goodbye,talk to you later
+goodbye,"no that's everything, goodbye"
+goodbye,"ok I'm done, thanks bye"
+goodbye,gotta go bye
+goodbye,alright thanks for your help bye
+thanks,thank you
+thanks,thanks so much
+thanks,that was helpful thank you
+thanks,appreciate it
+thanks,thanks a lot
+thanks,"great, thank you"
+thanks,perfect thanks
+thanks,awesome thank you so much
+thanks,thx
+thanks,much appreciated
+thanks,you're a lifesaver thanks
+recall_check,is there a recall on my {year} {make} {model}
+recall_check,does my {year} {make} {model} have any open recalls
+recall_check,are there any recalls for a {year} {make} {model}
+recall_check,can you check recalls for VIN {vin}
+recall_check,I want to check if my car has a recall
+recall_check,has my {make} {model} been recalled
+recall_check,is my {year} {make} {model} on a recall list
+recall_check,uh yeah I need to know if there's a recall on my {model}
+recall_check,check recall status for {vin}
+recall_check,my neighbor said my {make} {model} might have a recall can you check
+recall_check,is there an open safety recall on a {year} {make} {model}
+recall_check,any recall campaigns for my {model}
+recall_check,i saw something on the news about a recall for {make} vehicles is mine affected
+recall_check,can you look up recalls using my VIN {vin}
+recall_check,does the {year} {make} {model} have any safety issues i should know about
+complaint_history,what are common problems with a {year} {make} {model}
+complaint_history,are there known issues with the {make} {model}
+complaint_history,what complaints have other owners filed for a {year} {make} {model}
+complaint_history,is the {model} known for transmission problems
+complaint_history,what do people usually complain about with this car
+complaint_history,any common complaints for {year} {make} {model} owners
+complaint_history,what issues show up most for this model
+complaint_history,are there a lot of complaints about the brakes on a {model}
+complaint_history,what's the complaint history like for a {year} {make} {model}
+complaint_history,do owners report engine problems with this model
+complaint_history,i'm considering buying a {year} {make} {model} what problems does it have
+book_service,I need to book a {service} for my {year} {make} {model}
+book_service,can I schedule an oil change for next Tuesday
+book_service,I want to make an appointment for {service}
+book_service,book me in for {service} sometime {date}
+book_service,can I get my car in for service this week
+book_service,I need an appointment for brake pads
+book_service,schedule a 60k service for my {make} {model}
+book_service,"uh yeah I need to book a service, my brakes are squeaking"
+book_service,can you set up an appointment for {date} morning
+book_service,I'd like to book my {model} in for {service}
+book_service,"need to get tires rotated, can I book something"
+book_service,"book an appointment please, my name is {name} and my number is {phone}"
+book_service,set up a service appointment for tomorrow afternoon
+book_service,can you fit me in for an oil change this Saturday
+book_service,I want to schedule maintenance for my car
+reschedule_appointment,I need to move my appointment {ref_code} to a different day
+reschedule_appointment,can you reschedule my appointment
+reschedule_appointment,I can't make my appointment on {date} can we change it
+reschedule_appointment,"my reference code is {ref_code}, I need a new time"
+reschedule_appointment,"something came up, can we push my appointment back"
+reschedule_appointment,can I switch my appointment to next week
+reschedule_appointment,"need to reschedule, confirmation number {ref_code}"
+reschedule_appointment,change my appointment time please
+reschedule_appointment,I have to move my booking to later in the day
+cancel_appointment,I need to cancel my appointment
+cancel_appointment,"cancel my booking, reference {ref_code}"
+cancel_appointment,please cancel my service appointment for {date}
+cancel_appointment,"I won't be able to make it, cancel please"
+cancel_appointment,cancel appointment {ref_code}
+cancel_appointment,can you cancel my slot for tomorrow
+cancel_appointment,I need to call off my appointment
+cancel_appointment,"remove my booking please, my number is {phone}"
+appointment_status,what's the status of my appointment
+appointment_status,is my appointment still on for {date}
+appointment_status,can you look up my appointment {ref_code}
+appointment_status,do I have an appointment scheduled
+appointment_status,"checking on my booking status, phone is {phone}"
+appointment_status,is my car ready yet
+appointment_status,what time is my appointment again
+appointment_status,can you confirm my appointment details for {ref_code}
+pricing_estimate,how much does an oil change cost
+pricing_estimate,what's the price for {service}
+pricing_estimate,how much would brake pads run me
+pricing_estimate,can you give me an estimate for a 60k service
+pricing_estimate,what do you charge for tire rotation
+pricing_estimate,roughly how much is {service} going to cost
+pricing_estimate,price range for a transmission fluid service
+pricing_estimate,what's the cost of an AC recharge
+pricing_estimate,how much for new brake pads on a {make} {model}
+pricing_estimate,ballpark price for diagnostics
+warranty_question,is this covered under warranty
+warranty_question,does my warranty cover the transmission
+warranty_question,how long is the powertrain warranty
+warranty_question,what does the warranty actually cover
+warranty_question,is a brake job covered under warranty
+warranty_question,my car is still under warranty will this be free
+warranty_question,what's not covered by the warranty
+warranty_question,do I need to pay anything if it's under warranty
+warranty_question,how many miles does my warranty last
+warranty_question,is the recall repair covered even if I'm out of warranty
+service_faq,what are your hours today
+service_faq,do you have a loaner car available
+service_faq,what payment methods do you accept
+service_faq,where is your Northgate location
+service_faq,do you offer financing
+service_faq,is there a shuttle service
+service_faq,what happens if I miss my appointment
+service_faq,can I pay with a credit card
+service_faq,what's your cancellation policy
+service_faq,are you open on Sundays
+service_faq,do you validate parking
+parts_inquiry,do you have brake pads in stock for a {make} {model}
+parts_inquiry,is a replacement battery available for my car
+parts_inquiry,can you check if you have tires in my size
+parts_inquiry,do you carry OEM parts for {make}
+parts_inquiry,how long would it take to get a part ordered
+parts_inquiry,do you have an alternator for a {year} {make} {model}
+parts_inquiry,is the part for my AC compressor in stock
+complaint,I'm really unhappy with the service I received
+complaint,nobody called me back about my car
+complaint,I was overcharged for my last visit
+complaint,my car came back with a new noise after service
+complaint,the technician was rude to me
+complaint,I've been waiting way longer than promised
+complaint,this is the second time you've messed up my appointment
+complaint,I want to file a complaint about my last visit
+complaint,you charged me for work that wasn't done
+safety_concern,my brakes feel like they're not working
+safety_concern,I smell smoke coming from the engine
+safety_concern,my airbag light won't turn off
+safety_concern,the steering suddenly feels loose
+safety_concern,my car stalled on the highway
+safety_concern,there's a burning smell when I drive
+safety_concern,my brakes are grinding really badly
+safety_concern,the car shakes violently at highway speed
+safety_concern,I think my tire is about to blow out
+speak_to_human,can I talk to a real person
+speak_to_human,I want to speak with a human
+speak_to_human,connect me to an agent please
+speak_to_human,"this isn't helping, can I talk to someone"
+speak_to_human,I need to speak to a service advisor
+speak_to_human,get me a human please
+out_of_scope,what's the weather like today
+out_of_scope,can you help me file my taxes
+out_of_scope,what's the capital of France
+out_of_scope,tell me a joke
+out_of_scope,can you order me a pizza
+out_of_scope,what stocks should I buy

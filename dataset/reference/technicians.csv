@@ -1,0 +1,19 @@
+technician_id,name,location_id,skill_level,certifications,shift_pattern,hire_date,efficiency_base
+T001,Marcus Alvarez,1,A,ASE Master;ASE L1 Advanced Engine Performance,Mon-Fri 07:00-15:30,2016-03-14,1.12
+T002,Priya Natarajan,1,A,ASE Master;ASE Electrical,Mon-Fri 08:30-17:00,2017-07-01,1.08
+T003,Dwayne Okafor,1,B,ASE Brakes;ASE Suspension,Tue-Sat 07:00-15:30,2019-01-21,0.98
+T004,Sofia Reyes,1,B,ASE Brakes;ASE Heating and AC,Tue-Sat 08:30-17:00,2020-05-11,1.02
+T005,Ethan Brooks,1,B,ASE Engine Repair,Mon-Fri 09:30-18:00,2020-11-02,0.95
+T006,Grace Lindqvist,1,C,ASE Maintenance and Light Repair,Wed-Sun 07:00-15:30,2022-04-18,0.88
+T007,Isaiah Thompson,1,C,ASE Maintenance and Light Repair,Wed-Sun 08:30-17:00,2023-02-06,0.86
+T008,Renee Castillo,1,B,ASE Electrical;ASE Engine Performance,Mon-Fri 07:00-15:30,2018-09-09,1.05
+T009,Victor Huang,2,A,ASE Master;EV Systems Certified,Mon-Fri 07:00-15:30,2015-06-23,1.15
+T010,Aaliyah Simmons,2,A,ASE Master;ASE Transmission,Mon-Fri 08:30-17:00,2016-10-04,1.10
+T011,Noah Petersen,2,B,ASE Brakes;ASE Suspension,Tue-Sat 07:00-15:30,2019-08-19,0.99
+T012,Chidinma Eze,2,B,ASE Heating and AC,Tue-Sat 08:30-17:00,2021-03-15,0.97
+T013,Logan Mercer,2,C,ASE Maintenance and Light Repair,Wed-Sun 07:00-15:30,2022-09-27,0.90
+T014,Bianca Ferraro,2,C,ASE Maintenance and Light Repair,Wed-Sun 08:30-17:00,2023-06-12,0.87
+T015,Omar Haddad,3,A,ASE Master;ASE Electrical,Mon-Fri 07:30-16:00,2017-02-08,1.09
+T016,Katarina Novak,3,B,ASE Brakes;ASE Engine Repair,Tue-Sat 07:30-16:00,2020-01-13,1.00
+T017,Julian Ashford,3,B,ASE Suspension;ASE Heating and AC,Tue-Sat 08:00-16:30,2021-11-01,0.96
+T018,Mei Lin Tanaka,3,C,ASE Maintenance and Light Repair,Wed-Sun 07:30-16:00,2023-04-03,0.89

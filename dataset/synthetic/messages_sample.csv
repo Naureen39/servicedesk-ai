@@ -1,0 +1,101 @@
+message_id,conversation_id,turn,sender,text,intent,confidence,latency_ms,tokens_in,tokens_out,provider,cache_hit,created_at
+MSG-00000001,CONV-0000001,0,customer,can I schedule an appointment,book_service,0.771,2178,0,0,,True,2025-09-09T21:00:23
+MSG-00000002,CONV-0000001,1,assistant,[response text omitted in synthetic sample],book_service,0.782,1618,167,129,gemini,False,2025-09-09T21:00:28
+MSG-00000003,CONV-0000001,2,customer,[response text omitted in synthetic sample],book_service,0.687,1785,272,50,gemini,False,2025-09-09T21:00:43
+MSG-00000004,CONV-0000002,0,customer,I need to book a {service},book_service,0.673,445,257,71,None,False,2025-09-19T12:00:15
+MSG-00000005,CONV-0000002,1,assistant,[response text omitted in synthetic sample],book_service,0.614,249,0,0,,True,2025-09-19T12:00:53
+MSG-00000006,CONV-0000002,2,customer,[response text omitted in synthetic sample],book_service,0.97,475,323,59,groq,False,2025-09-19T12:01:11
+MSG-00000007,CONV-0000002,3,assistant,[response text omitted in synthetic sample],book_service,0.645,836,0,0,,True,2025-09-19T12:01:26
+MSG-00000008,CONV-0000003,0,customer,I need to book a {service},book_service,0.659,1993,92,107,gemini,False,2025-09-15T07:00:16
+MSG-00000009,CONV-0000003,1,assistant,[response text omitted in synthetic sample],book_service,0.75,1791,0,0,,True,2025-09-15T07:00:36
+MSG-00000010,CONV-0000003,2,customer,[response text omitted in synthetic sample],book_service,0.586,795,0,0,,True,2025-09-15T07:01:01
+MSG-00000011,CONV-0000004,0,customer,can I schedule an appointment,book_service,0.962,89,91,78,groq,False,2025-09-11T08:00:14
+MSG-00000012,CONV-0000004,1,assistant,[response text omitted in synthetic sample],book_service,0.74,654,0,0,,True,2025-09-11T08:00:43
+MSG-00000013,CONV-0000004,2,customer,[response text omitted in synthetic sample],book_service,0.823,268,197,147,None,False,2025-09-11T08:01:01
+MSG-00000014,CONV-0000004,3,assistant,[response text omitted in synthetic sample],book_service,0.824,670,0,0,,True,2025-09-11T08:01:32
+MSG-00000015,CONV-0000005,0,customer,can I schedule an appointment,book_service,0.719,303,213,85,None,False,2025-09-16T23:00:16
+MSG-00000016,CONV-0000005,1,assistant,[response text omitted in synthetic sample],book_service,0.978,1830,0,0,,True,2025-09-16T23:00:31
+MSG-00000017,CONV-0000005,2,customer,[response text omitted in synthetic sample],book_service,0.651,1151,0,0,,True,2025-09-16T23:01:06
+MSG-00000018,CONV-0000005,3,assistant,[response text omitted in synthetic sample],book_service,0.671,825,149,145,groq,False,2025-09-16T23:01:13
+MSG-00000019,CONV-0000006,0,customer,can I schedule an appointment,book_service,0.639,568,312,33,groq,False,2025-08-26T18:00:21
+MSG-00000020,CONV-0000006,1,assistant,[response text omitted in synthetic sample],book_service,0.796,299,0,0,,True,2025-08-26T18:00:37
+MSG-00000021,CONV-0000006,2,customer,[response text omitted in synthetic sample],book_service,0.823,450,0,0,,True,2025-08-26T18:00:44
+MSG-00000022,CONV-0000006,3,assistant,[response text omitted in synthetic sample],book_service,0.752,112,302,84,groq,False,2025-08-26T18:00:53
+MSG-00000023,CONV-0000007,0,customer,I need to book a {service},book_service,0.614,1632,124,166,gemini,False,2025-09-21T12:00:27
+MSG-00000024,CONV-0000007,1,assistant,[response text omitted in synthetic sample],book_service,0.916,982,243,173,None,False,2025-09-21T12:00:55
+MSG-00000025,CONV-0000007,2,customer,[response text omitted in synthetic sample],book_service,0.615,2103,240,97,None,False,2025-09-21T12:01:22
+MSG-00000026,CONV-0000008,0,customer,can I schedule an appointment,book_service,0.594,647,384,159,groq,False,2025-08-29T23:00:37
+MSG-00000027,CONV-0000008,1,assistant,[response text omitted in synthetic sample],book_service,0.646,1040,0,0,,True,2025-08-29T23:00:44
+MSG-00000028,CONV-0000008,2,customer,[response text omitted in synthetic sample],book_service,0.807,967,234,59,groq,False,2025-08-29T23:01:22
+MSG-00000029,CONV-0000008,3,assistant,[response text omitted in synthetic sample],book_service,0.803,779,0,0,,True,2025-08-29T23:01:51
+MSG-00000030,CONV-0000009,0,customer,can I schedule an appointment,book_service,0.959,1574,236,156,groq,False,2025-09-14T13:00:36
+MSG-00000031,CONV-0000009,1,assistant,[response text omitted in synthetic sample],book_service,0.931,314,371,45,groq,False,2025-09-14T13:00:54
+MSG-00000032,CONV-0000009,2,customer,[response text omitted in synthetic sample],book_service,0.863,2012,239,82,groq,False,2025-09-14T13:01:03
+MSG-00000033,CONV-0000010,0,customer,can I schedule an appointment,book_service,0.861,124,191,107,groq,False,2025-08-30T10:00:16
+MSG-00000034,CONV-0000010,1,assistant,[response text omitted in synthetic sample],book_service,0.716,536,186,177,None,False,2025-08-30T10:00:51
+MSG-00000035,CONV-0000010,2,customer,[response text omitted in synthetic sample],book_service,0.571,517,174,121,groq,False,2025-08-30T10:00:59
+MSG-00000036,CONV-0000011,0,customer,can I schedule an appointment,book_service,0.855,307,208,31,groq,False,2025-09-14T17:00:24
+MSG-00000037,CONV-0000011,1,assistant,[response text omitted in synthetic sample],book_service,0.929,2163,0,0,,True,2025-09-14T17:00:51
+MSG-00000038,CONV-0000011,2,customer,[response text omitted in synthetic sample],book_service,0.802,874,219,117,gemini,False,2025-09-14T17:01:08
+MSG-00000039,CONV-0000012,0,customer,can I schedule an appointment,book_service,0.888,495,0,0,,True,2025-08-25T18:00:22
+MSG-00000040,CONV-0000012,1,assistant,[response text omitted in synthetic sample],book_service,0.826,91,204,168,None,False,2025-08-25T18:00:51
+MSG-00000041,CONV-0000012,2,customer,[response text omitted in synthetic sample],book_service,0.974,736,0,0,,True,2025-08-25T18:01:00
+MSG-00000042,CONV-0000012,3,assistant,[response text omitted in synthetic sample],book_service,0.803,588,0,0,,True,2025-08-25T18:01:37
+MSG-00000043,CONV-0000013,0,customer,can I schedule an appointment,book_service,0.855,686,0,0,,True,2025-09-11T15:00:16
+MSG-00000044,CONV-0000013,1,assistant,[response text omitted in synthetic sample],book_service,0.733,499,0,0,,True,2025-09-11T15:00:50
+MSG-00000045,CONV-0000013,2,customer,[response text omitted in synthetic sample],book_service,0.978,139,172,125,None,False,2025-09-11T15:01:15
+MSG-00000046,CONV-0000014,0,customer,I need to book a {service},book_service,0.783,1244,275,56,gemini,False,2025-08-28T06:00:29
+MSG-00000047,CONV-0000014,1,assistant,[response text omitted in synthetic sample],book_service,0.853,525,215,65,gemini,False,2025-08-28T06:00:52
+MSG-00000048,CONV-0000015,0,customer,I need to book a {service},book_service,0.913,1501,0,0,,True,2025-09-20T23:00:32
+MSG-00000049,CONV-0000015,1,assistant,[response text omitted in synthetic sample],book_service,0.946,1702,348,155,None,False,2025-09-20T23:00:46
+MSG-00000050,CONV-0000015,2,customer,[response text omitted in synthetic sample],book_service,0.933,1026,211,148,groq,False,2025-09-20T23:01:16
+MSG-00000051,CONV-0000016,0,customer,I need to book a {service},book_service,0.871,483,200,140,groq,False,2025-09-19T09:00:23
+MSG-00000052,CONV-0000016,1,assistant,[response text omitted in synthetic sample],book_service,0.595,279,180,36,None,False,2025-09-19T09:00:45
+MSG-00000053,CONV-0000017,0,customer,can I schedule an appointment,book_service,0.835,708,0,0,,True,2025-09-07T15:00:15
+MSG-00000054,CONV-0000017,1,assistant,[response text omitted in synthetic sample],book_service,0.668,142,329,153,groq,False,2025-09-07T15:00:48
+MSG-00000055,CONV-0000018,0,customer,can I schedule an appointment,book_service,0.607,300,370,124,None,False,2025-09-06T19:00:18
+MSG-00000056,CONV-0000018,1,assistant,[response text omitted in synthetic sample],book_service,0.839,564,202,68,groq,False,2025-09-06T19:00:57
+MSG-00000057,CONV-0000019,0,customer,can I schedule an appointment,book_service,0.937,291,0,0,,True,2025-09-05T19:00:38
+MSG-00000058,CONV-0000019,1,assistant,[response text omitted in synthetic sample],book_service,0.818,515,0,0,,True,2025-09-05T19:00:58
+MSG-00000059,CONV-0000019,2,customer,[response text omitted in synthetic sample],book_service,0.619,676,398,178,gemini,False,2025-09-05T19:01:32
+MSG-00000060,CONV-0000020,0,customer,can I schedule an appointment,book_service,0.572,589,386,96,gemini,False,2025-09-21T08:00:16
+MSG-00000061,CONV-0000020,1,assistant,[response text omitted in synthetic sample],book_service,0.849,891,195,34,groq,False,2025-09-21T08:00:49
+MSG-00000062,CONV-0000020,2,customer,[response text omitted in synthetic sample],book_service,0.929,656,85,138,gemini,False,2025-09-21T08:01:24
+MSG-00000063,CONV-0000021,0,customer,can I schedule an appointment,book_service,0.577,224,168,111,None,False,2025-09-16T12:00:06
+MSG-00000064,CONV-0000021,1,assistant,[response text omitted in synthetic sample],book_service,0.721,431,138,143,groq,False,2025-09-16T12:00:44
+MSG-00000065,CONV-0000022,0,customer,I need to book a {service},book_service,0.744,1726,260,99,groq,False,2025-09-05T07:00:34
+MSG-00000066,CONV-0000022,1,assistant,[response text omitted in synthetic sample],book_service,0.616,1536,0,0,,True,2025-09-05T07:00:49
+MSG-00000067,CONV-0000023,0,customer,can I schedule an appointment,book_service,0.763,222,0,0,,True,2025-08-26T16:00:38
+MSG-00000068,CONV-0000023,1,assistant,[response text omitted in synthetic sample],book_service,0.718,291,0,0,,True,2025-08-26T16:01:04
+MSG-00000069,CONV-0000023,2,customer,[response text omitted in synthetic sample],book_service,0.96,873,260,52,groq,False,2025-08-26T16:01:26
+MSG-00000070,CONV-0000024,0,customer,can I schedule an appointment,book_service,0.667,254,270,79,None,False,2025-08-26T08:00:15
+MSG-00000071,CONV-0000024,1,assistant,[response text omitted in synthetic sample],book_service,0.77,389,0,0,,True,2025-08-26T08:00:30
+MSG-00000072,CONV-0000024,2,customer,[response text omitted in synthetic sample],book_service,0.82,150,120,123,None,False,2025-08-26T08:00:35
+MSG-00000073,CONV-0000025,0,customer,can I schedule an appointment,book_service,0.653,883,122,95,groq,False,2025-08-30T21:00:33
+MSG-00000074,CONV-0000025,1,assistant,[response text omitted in synthetic sample],book_service,0.822,147,0,0,,True,2025-08-30T21:00:41
+MSG-00000075,CONV-0000025,2,customer,[response text omitted in synthetic sample],book_service,0.94,692,126,176,None,False,2025-08-30T21:00:59
+MSG-00000076,CONV-0000025,3,assistant,[response text omitted in synthetic sample],book_service,0.6,729,234,115,gemini,False,2025-08-30T21:01:15
+MSG-00000077,CONV-0000026,0,customer,I need to book a {service},book_service,0.696,860,129,45,groq,False,2025-09-14T06:00:38
+MSG-00000078,CONV-0000026,1,assistant,[response text omitted in synthetic sample],book_service,0.83,636,217,83,groq,False,2025-09-14T06:01:15
+MSG-00000079,CONV-0000026,2,customer,[response text omitted in synthetic sample],book_service,0.963,716,0,0,,True,2025-09-14T06:01:32
+MSG-00000080,CONV-0000027,0,customer,can I schedule an appointment,book_service,0.728,763,324,52,groq,False,2025-08-28T07:00:38
+MSG-00000081,CONV-0000027,1,assistant,[response text omitted in synthetic sample],book_service,0.642,263,0,0,,True,2025-08-28T07:00:56
+MSG-00000082,CONV-0000027,2,customer,[response text omitted in synthetic sample],book_service,0.671,308,364,84,None,False,2025-08-28T07:01:18
+MSG-00000083,CONV-0000028,0,customer,can I schedule an appointment,book_service,0.821,743,0,0,,True,2025-08-28T23:00:21
+MSG-00000084,CONV-0000028,1,assistant,[response text omitted in synthetic sample],book_service,0.951,670,123,106,groq,False,2025-08-28T23:00:36
+MSG-00000085,CONV-0000029,0,customer,I need to book a {service},book_service,0.701,782,127,27,groq,False,2025-09-03T07:00:32
+MSG-00000086,CONV-0000029,1,assistant,[response text omitted in synthetic sample],book_service,0.613,439,0,0,,True,2025-09-03T07:01:06
+MSG-00000087,CONV-0000029,2,customer,[response text omitted in synthetic sample],book_service,0.864,420,354,154,groq,False,2025-09-03T07:01:12
+MSG-00000088,CONV-0000030,0,customer,can I schedule an appointment,book_service,0.581,769,329,179,groq,False,2025-08-27T22:00:09
+MSG-00000089,CONV-0000030,1,assistant,[response text omitted in synthetic sample],book_service,0.828,1235,183,137,gemini,False,2025-08-27T22:00:20
+MSG-00000090,CONV-0000030,2,customer,[response text omitted in synthetic sample],book_service,0.966,318,296,120,groq,False,2025-08-27T22:00:53
+MSG-00000091,CONV-0000031,0,customer,I need to book a {service},book_service,0.866,478,236,104,gemini,False,2025-08-26T18:00:28
+MSG-00000092,CONV-0000031,1,assistant,[response text omitted in synthetic sample],book_service,0.856,494,310,54,gemini,False,2025-08-26T18:00:41
+MSG-00000093,CONV-0000032,0,customer,I need to book a {service},book_service,0.647,688,0,0,,True,2025-08-28T07:00:29
+MSG-00000094,CONV-0000032,1,assistant,[response text omitted in synthetic sample],book_service,0.876,639,106,72,groq,False,2025-08-28T07:00:42
+MSG-00000095,CONV-0000032,2,customer,[response text omitted in synthetic sample],book_service,0.621,477,0,0,,True,2025-08-28T07:01:10
+MSG-00000096,CONV-0000032,3,assistant,[response text omitted in synthetic sample],book_service,0.7,182,388,118,groq,False,2025-08-28T07:01:43
+MSG-00000097,CONV-0000033,0,customer,can I schedule an appointment,book_service,0.839,552,142,91,groq,False,2025-09-14T12:00:06
+MSG-00000098,CONV-0000033,1,assistant,[response text omitted in synthetic sample],book_service,0.566,681,325,111,groq,False,2025-09-14T12:00:27
+MSG-00000099,CONV-0000033,2,customer,[response text omitted in synthetic sample],book_service,0.676,188,0,0,,True,2025-09-14T12:00:33
+MSG-00000100,CONV-0000034,0,customer,I need to book a {service},book_service,0.586,1888,149,160,groq,False,2025-09-09T16:00:37
