@@ -1,16 +1,21 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import ResponsiveImage from "../components/ResponsiveImage";
 import { IMAGES } from "../lib/imageSlugs";
 import { Input, Label } from "../components/ui/Input";
 import Button from "../components/ui/Button";
 import { useDocumentHead } from "../lib/useDocumentHead";
 import { staffLogin, staffMfaVerify } from "../lib/api";
+import { useAuth } from "../lib/auth";
 
-type Step = "credentials" | "mfa" | "success";
+type Step = "credentials" | "mfa";
 
 export default function Login() {
   useDocumentHead({ title: "Staff Login", description: "Sign in to the Meridian Auto Group staff portal." });
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const redirectTo = (location.state as { from?: string } | null)?.from ?? "/portal";
 
   const [step, setStep] = useState<Step>("credentials");
   const [email, setEmail] = useState("");
@@ -21,11 +26,12 @@ export default function Login() {
   const [challengeToken, setChallengeToken] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [lockoutMessage, setLockoutMessage] = useState<string | null>(null);
 
   const handleCredentials = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    setLockoutMessage(null);
     setLoading(true);
     try {
       const result = await staffLogin(email, password);
@@ -33,11 +39,13 @@ export default function Login() {
         setChallengeToken(result.mfa_challenge_token);
         setStep("mfa");
       } else {
-        setAccessToken(result.access_token);
-        setStep("success");
+        await login(result.access_token);
+        navigate(redirectTo, { replace: true });
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Invalid email or password.");
+      const message = err instanceof Error ? err.message : "Invalid email or password.";
+      if (/locked/i.test(message)) setLockoutMessage(message);
+      else setError(message);
     } finally {
       setLoading(false);
     }
@@ -50,8 +58,8 @@ export default function Login() {
     setLoading(true);
     try {
       const result = await staffMfaVerify(challengeToken, mfaCode);
-      setAccessToken(result.access_token);
-      setStep("success");
+      await login(result.access_token);
+      navigate(redirectTo, { replace: true });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Invalid code. Please try again.");
     } finally {
@@ -111,6 +119,11 @@ export default function Login() {
                 <input type="checkbox" checked={rememberDevice} onChange={(e) => setRememberDevice(e.target.checked)} className="rounded" />
                 Remember this device
               </label>
+              {lockoutMessage && (
+                <p className="rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-800" role="alert">
+                  {lockoutMessage}
+                </p>
+              )}
               {error && (
                 <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-danger" role="alert">
                   {error}
@@ -139,15 +152,6 @@ export default function Login() {
             </form>
           )}
 
-          {step === "success" && (
-            <div className="mt-8 rounded-lg border border-green-200 bg-green-50 p-4 text-sm text-green-800">
-              <p className="font-semibold">Signed in successfully.</p>
-              <p className="mt-1">
-                The staff portal (dashboards, escalations, appointments) ships in Phase 8. Your session token is active
-                {accessToken ? ` (${accessToken.slice(0, 12)}...)` : ""}.
-              </p>
-            </div>
-          )}
 
           <p className="mt-8 text-center text-sm text-slate-500">
             <Link to="/" className="font-semibold text-accent hover:underline">

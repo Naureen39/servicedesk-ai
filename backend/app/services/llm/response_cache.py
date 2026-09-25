@@ -13,9 +13,9 @@ from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.models.assistant import ResponseCache
+from app.services import settings_store
 from app.services.embeddings import embed_query
 
-SIMILARITY_THRESHOLD = 0.92
 TTL_DAYS = 30
 
 
@@ -35,7 +35,7 @@ async def lookup(db: AsyncSession, question: str, intent: str) -> str | None:
 
     cached, dist = row
     similarity = 1.0 - float(dist)
-    if similarity < SIMILARITY_THRESHOLD:
+    if similarity < settings_store.cache_similarity_threshold():
         return None
 
     await db.execute(update(ResponseCache).where(ResponseCache.id == cached.id).values(hits=cached.hits + 1))

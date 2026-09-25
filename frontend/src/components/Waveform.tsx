@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
 
 interface WaveformProps {
   level: number;
@@ -8,13 +8,11 @@ interface WaveformProps {
 const BAR_COUNT = 24;
 
 export default function Waveform({ level, active }: WaveformProps) {
-  const historyRef = useRef<number[]>(new Array(BAR_COUNT).fill(0));
+  const [bars, setBars] = useState<number[]>(() => new Array(BAR_COUNT).fill(0));
 
   useEffect(() => {
-    historyRef.current = [...historyRef.current.slice(1), active ? level : 0];
+    setBars((prev) => [...prev.slice(1), active ? level : 0]);
   }, [level, active]);
-
-  const bars = historyRef.current;
 
   return (
     <div className="flex h-14 items-end justify-center gap-[3px]" role="img" aria-label={active ? "Listening" : "Idle"}>

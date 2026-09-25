@@ -118,6 +118,11 @@ async def _seed_dialog_reference_data(_seed_rbac):
     async with async_session_factory() as db:
         await catalog_cache.refresh(db)
 
+    from app.services import settings_store
+
+    async with async_session_factory() as db:
+        await settings_store.refresh(db)
+
 
 @pytest_asyncio.fixture(autouse=True)
 async def _clean_mutable_tables():

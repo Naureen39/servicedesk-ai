@@ -1,14 +1,14 @@
 """Admin endpoints (Section 2.5): users, roles, KB listing, settings, audit log.
 
 User/role management and audit-log reading are real against the identity tables this phase
-owns. `/admin/kb` lists `kb_documents` (populated once the Phase 3 ingestion job runs).
-`/admin/settings` is read-only here; persisted runtime settings (provider order, thresholds,
-daily budgets) are wired to the LLM router configuration in Phase 4.
+owns. Knowledge base editing/publishing and persisted, editable runtime settings (provider
+order, thresholds, daily budgets) are Section 8.3 Admin.
 """
 
 from __future__ import annotations
 
 import uuid
+from decimal import Decimal
 
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy import select
@@ -20,15 +20,30 @@ from app.core.exceptions import AppError
 from app.core.permissions import (
     PERM_AUDIT_READ,
     PERM_KB_READ,
+    PERM_KB_WRITE,
     PERM_ROLES_MANAGE,
     PERM_SETTINGS_MANAGE,
     PERM_USERS_MANAGE,
 )
 from app.core.security import hash_password
 from app.db.base import get_db
-from app.db.models.identity import AuditLog, Role, User
+from app.db.models.identity import AppSettings, AuditLog, Role, User
 from app.db.models.knowledge import KbDocument
-from app.schemas.admin import AuditLogOut, KbDocumentOut, RoleOut, UserCreate, UserOut, UserPatch
+from app.schemas.admin import (
+    AppSettingsOut,
+    AppSettingsPatch,
+    AuditLogOut,
+    KbDocumentCreate,
+    KbDocumentDetailOut,
+    KbDocumentOut,
+    KbDocumentUpdate,
+    KbPublishResult,
+    RoleOut,
+    UserCreate,
+    UserOut,
+    UserPatch,
+)
+from app.services import kb_admin, settings_store
 from app.services.audit import record_audit
 
 from .deps import CurrentUser, get_client_ip, require_permission
@@ -166,15 +181,127 @@ async def list_kb_documents(
     return list(result.scalars().all())
 
 
-@router.get("/settings")
-async def get_admin_settings(_: CurrentUser = Depends(require_permission(PERM_SETTINGS_MANAGE))) -> dict:
-    return {
-        "llm_primary": settings.llm_primary,
-        "llm_daily_request_budget_groq": settings.llm_daily_request_budget_groq,
-        "llm_daily_request_budget_gemini": settings.llm_daily_request_budget_gemini,
-        "embedding_model": settings.embedding_model,
-        "note": "Persisted, editable runtime settings (confidence/cache thresholds, provider order) ship with the Phase 4 LLM router.",
-    }
+@router.get("/kb/{doc_id}", response_model=KbDocumentDetailOut)
+async def get_kb_document(
+    doc_id: int,
+    _: CurrentUser = Depends(require_permission(PERM_KB_READ)),
+    db: AsyncSession = Depends(get_db),
+) -> KbDocumentDetailOut:
+    result = await db.execute(select(KbDocument).where(KbDocument.id == doc_id))
+    doc = result.scalar_one_or_none()
+    if doc is None:
+        raise AppError(404, "Document not found", type_slug="https://meridian.example/problems/not-found")
+    try:
+        content = kb_admin.read_document(doc.source_path)
+    except kb_admin.KbDocumentNotFoundError:
+        content = ""
+    return KbDocumentDetailOut(
+        id=doc.id, source_path=doc.source_path, title=doc.title,
+        document_hash=doc.document_hash, updated_at=doc.updated_at, content=content,
+    )
+
+
+@router.post("/kb", response_model=KbDocumentDetailOut, status_code=201)
+async def create_kb_document(
+    payload: KbDocumentCreate,
+    user: CurrentUser = Depends(require_permission(PERM_KB_WRITE)),
+    db: AsyncSession = Depends(get_db),
+    ip: str = Depends(get_client_ip),
+) -> KbDocumentDetailOut:
+    """Section 8.3: "Markdown editor with preview, publish triggers re-embedding" -- writes the
+    real markdown file and immediately publishes it (chunk + embed), so a new document is
+    searchable right away rather than left in a half-created state until a separate publish
+    call."""
+    source_path = f"dataset/reference/knowledge_base/{payload.source_path.strip('/')}"
+    if not source_path.endswith(".md"):
+        source_path += ".md"
+    try:
+        kb_admin.read_document(source_path)
+        raise AppError(409, "A document already exists at this path", type_slug="https://meridian.example/problems/conflict")
+    except kb_admin.KbDocumentNotFoundError:
+        pass
+
+    kb_admin.write_document(source_path, payload.content)
+    await kb_admin.republish_document(db, source_path, title=payload.title)
+
+    result = await db.execute(select(KbDocument).where(KbDocument.source_path == source_path))
+    doc = result.scalar_one()
+    await record_audit(db, actor_user_id=user.id, action="kb.create", entity_type="kb_document", entity_id=str(doc.id), after={"source_path": source_path}, ip=ip)
+    await db.commit()
+    return KbDocumentDetailOut(id=doc.id, source_path=doc.source_path, title=doc.title, document_hash=doc.document_hash, updated_at=doc.updated_at, content=payload.content)
+
+
+@router.put("/kb/{doc_id}", response_model=KbDocumentDetailOut)
+async def update_kb_document(
+    doc_id: int,
+    payload: KbDocumentUpdate,
+    user: CurrentUser = Depends(require_permission(PERM_KB_WRITE)),
+    db: AsyncSession = Depends(get_db),
+    ip: str = Depends(get_client_ip),
+) -> KbDocumentDetailOut:
+    """Saves the edit to disk but does NOT re-embed -- that's the separate `/publish` call
+    below, matching the plan's "Markdown editor with preview, publish triggers re-embedding"
+    (editing and publishing are deliberately different actions)."""
+    result = await db.execute(select(KbDocument).where(KbDocument.id == doc_id))
+    doc = result.scalar_one_or_none()
+    if doc is None:
+        raise AppError(404, "Document not found", type_slug="https://meridian.example/problems/not-found")
+
+    kb_admin.write_document(doc.source_path, payload.content)
+    if payload.title:
+        doc.title = payload.title
+    await record_audit(db, actor_user_id=user.id, action="kb.update", entity_type="kb_document", entity_id=str(doc.id), ip=ip)
+    await db.commit()
+    return KbDocumentDetailOut(id=doc.id, source_path=doc.source_path, title=doc.title, document_hash=doc.document_hash, updated_at=doc.updated_at, content=payload.content)
+
+
+@router.post("/kb/{doc_id}/publish", response_model=KbPublishResult)
+async def publish_kb_document(
+    doc_id: int,
+    user: CurrentUser = Depends(require_permission(PERM_KB_WRITE)),
+    db: AsyncSession = Depends(get_db),
+    ip: str = Depends(get_client_ip),
+) -> KbPublishResult:
+    result = await db.execute(select(KbDocument).where(KbDocument.id == doc_id))
+    doc = result.scalar_one_or_none()
+    if doc is None:
+        raise AppError(404, "Document not found", type_slug="https://meridian.example/problems/not-found")
+
+    outcome = await kb_admin.republish_document(db, doc.source_path, title=doc.title)
+    await record_audit(db, actor_user_id=user.id, action="kb.publish", entity_type="kb_document", entity_id=str(doc_id), after=outcome, ip=ip)
+    await db.commit()
+    return KbPublishResult(**outcome)
+
+
+@router.get("/settings", response_model=AppSettingsOut)
+async def get_admin_settings(
+    _: CurrentUser = Depends(require_permission(PERM_SETTINGS_MANAGE)), db: AsyncSession = Depends(get_db)
+) -> AppSettings:
+    result = await db.execute(select(AppSettings).where(AppSettings.id == 1))
+    return result.scalar_one()
+
+
+@router.patch("/settings", response_model=AppSettingsOut)
+async def patch_admin_settings(
+    payload: AppSettingsPatch,
+    user: CurrentUser = Depends(require_permission(PERM_SETTINGS_MANAGE)),
+    db: AsyncSession = Depends(get_db),
+    ip: str = Depends(get_client_ip),
+) -> AppSettings:
+    result = await db.execute(select(AppSettings).where(AppSettings.id == 1))
+    row = result.scalar_one()
+    changes = payload.model_dump(exclude_unset=True)
+    # audit_logs.before/after are JSON columns; the Numeric(4,3) threshold columns come back
+    # as Decimal, which json.dumps chokes on, so cast to float for the audit trail.
+    before = {k: float(v) if isinstance(v := getattr(row, k), Decimal) else v for k in changes}
+    for field, value in changes.items():
+        setattr(row, field, value)
+
+    await record_audit(db, actor_user_id=user.id, action="settings.update", entity_type="app_settings", entity_id="1", before=before, after=changes, ip=ip)
+    await db.commit()
+    await settings_store.refresh(db)
+    await db.refresh(row)
+    return row
 
 
 @router.get("/audit-logs", response_model=list[AuditLogOut])

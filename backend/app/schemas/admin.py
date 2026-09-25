@@ -60,3 +60,42 @@ class KbDocumentOut(BaseModel):
     updated_at: datetime | None
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class KbDocumentDetailOut(KbDocumentOut):
+    content: str
+
+
+class KbDocumentCreate(BaseModel):
+    source_path: str
+    title: str
+    content: str
+
+
+class KbDocumentUpdate(BaseModel):
+    content: str
+    title: str | None = None
+
+
+class KbPublishResult(BaseModel):
+    chunk_count: int
+    unchanged: bool
+
+
+class AppSettingsOut(BaseModel):
+    llm_primary: str
+    confidence_threshold: float
+    cache_similarity_threshold: float
+    daily_budget_groq: int
+    daily_budget_gemini: int
+    updated_at: datetime | None
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class AppSettingsPatch(BaseModel):
+    llm_primary: str | None = None
+    confidence_threshold: float | None = None
+    cache_similarity_threshold: float | None = None
+    daily_budget_groq: int | None = None
+    daily_budget_gemini: int | None = None

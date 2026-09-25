@@ -26,6 +26,8 @@ class AppointmentPatch(BaseModel):
     status: str | None = None
     technician_id: str | None = None
     bay_number: int | None = None
+    scheduled_start: datetime | None = None
+    scheduled_end: datetime | None = None
 
 
 class SlotOfferOut(BaseModel):

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from fastapi import APIRouter
 
-from . import admin, analytics, appointments, auth, chat, public, staff, voice
+from . import admin, analytics, appointments, auth, chat, public, staff, test_console, voice
 
 api_router = APIRouter(prefix="/api/v1")
 api_router.include_router(auth.router)
@@ -15,3 +15,4 @@ api_router.include_router(appointments.router)
 api_router.include_router(staff.router)
 api_router.include_router(analytics.router)
 api_router.include_router(admin.router)
+api_router.include_router(test_console.router)

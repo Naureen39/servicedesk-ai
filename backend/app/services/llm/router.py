@@ -14,6 +14,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import get_settings
 from app.db.models.assistant import LlmUsageDaily
+from app.services import settings_store
 from app.services.llm.base import LLMProvider, LLMResult, Message, ProviderError
 
 CIRCUIT_BREAKER_THRESHOLD = 3
@@ -50,12 +51,19 @@ class LLMRouter:
     def __init__(self, providers: dict[str, LLMProvider], order: list[str] | None = None) -> None:
         settings = get_settings()
         self.providers = providers
-        self.order = order or self._default_order(settings.llm_primary)
+        self._explicit_order = order  # set only by tests that want a fixed order
+        self._env_default_primary = settings.llm_primary
         self._breakers: dict[str, _CircuitBreaker] = {name: _CircuitBreaker() for name in providers}
-        self._daily_budgets = {
-            "groq": settings.llm_daily_request_budget_groq,
-            "gemini": settings.llm_daily_request_budget_gemini,
-        }
+
+    @property
+    def order(self) -> list[str]:
+        """Recomputed on every access from the live, admin-editable setting (Section 8.3) so
+        a provider-order change in the portal takes effect on the very next turn, no restart
+        needed -- falls back to the explicit order a test passed in, then the env default."""
+        if self._explicit_order is not None:
+            return self._explicit_order
+        primary = settings_store.llm_primary() or self._env_default_primary
+        return self._default_order(primary)
 
     def _default_order(self, primary: str) -> list[str]:
         names = list(self.providers.keys())
@@ -74,7 +82,10 @@ class LLMRouter:
         return row or 0
 
     async def _over_budget(self, db: AsyncSession, provider_name: str) -> bool:
-        budget = self._daily_budgets.get(provider_name)
+        budget = {
+            "groq": settings_store.daily_budget_groq(),
+            "gemini": settings_store.daily_budget_gemini(),
+        }.get(provider_name)
         if not budget:
             return False
         used = await self._requests_today(db, provider_name)

@@ -3,7 +3,6 @@ from settings")."""
 
 from __future__ import annotations
 
-from app.core.config import get_settings
 from app.services.llm.gemini_provider import GeminiProvider
 from app.services.llm.groq_provider import GroqProvider
 from app.services.llm.router import LLMRouter
@@ -18,19 +17,15 @@ def get_router() -> LLMRouter | None:
     if _router is not None:
         return _router
 
-    settings = get_settings()
     providers = {"groq": GroqProvider(), "gemini": GeminiProvider()}
     if not any(p.is_configured for p in providers.values()):
         return None
 
-    _router = LLMRouter(providers, order=_order_from_settings(settings.llm_primary, list(providers.keys())))
+    # No explicit `order` here: LLMRouter.order reads the live, admin-editable setting
+    # (Section 8.3) on every access, falling back to the env default (settings.llm_primary)
+    # until the settings_store cache is first refreshed at startup.
+    _router = LLMRouter(providers)
     return _router
-
-
-def _order_from_settings(primary: str, names: list[str]) -> list[str]:
-    if primary in names:
-        names = [primary] + [n for n in names if n != primary]
-    return names
 
 
 def reset_router_for_testing(router: LLMRouter | None) -> None:

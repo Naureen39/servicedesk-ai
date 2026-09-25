@@ -13,6 +13,7 @@ from datetime import UTC, datetime
 from fastapi import APIRouter, Depends, Query
 from fastapi.responses import Response
 from sqlalchemy import select, update
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.exceptions import AppError
@@ -224,10 +225,27 @@ async def patch_appointment(
     if scoped_location_id is not None and appointment.location_id != scoped_location_id:
         raise AppError(403, "Appointment is outside your assigned location", type_slug="https://meridian.example/problems/forbidden")
 
-    before = {"status": appointment.status, "technician_id": appointment.technician_id, "bay_number": appointment.bay_number}
+    before = {
+        "status": appointment.status, "technician_id": appointment.technician_id, "bay_number": appointment.bay_number,
+        "scheduled_start": appointment.scheduled_start.isoformat() if appointment.scheduled_start else None,
+    }
     changes = payload.model_dump(exclude_unset=True)
     for field, value in changes.items():
         setattr(appointment, field, value)
+
+    # Section 8.3 Appointments: "drag to reschedule with conflict validation" -- the real
+    # Phase 5 exclusion constraint (technician/bay, time range) is the actual validator here,
+    # the same one the customer-facing booking flow relies on; a portal-side reschedule that
+    # collides with another booking is rejected by Postgres itself, not a separate check that
+    # could drift out of sync with it.
+    try:
+        await db.flush()
+    except IntegrityError as exc:
+        await db.rollback()
+        raise AppError(
+            409, "That technician/bay is already booked for the requested time",
+            type_slug="https://meridian.example/problems/slot-unavailable",
+        ) from exc
 
     await record_audit(
         db,
@@ -236,7 +254,7 @@ async def patch_appointment(
         entity_type="appointment",
         entity_id=appointment_id,
         before=before,
-        after=changes,
+        after={k: (v.isoformat() if hasattr(v, "isoformat") else v) for k, v in changes.items()},
         ip=ip,
     )
     await db.commit()

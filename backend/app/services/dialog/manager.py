@@ -13,10 +13,10 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.models.assistant import Conversation, Message
+from app.services import settings_store
 from app.services.dialog import flows, policy, templates
 from app.services.dialog.result import TurnResult
 from app.services.dialog.state import (
-    CONFIDENCE_THRESHOLD,
     GLOBAL_INTERRUPT_INTENTS,
     MAX_CLARIFICATION_ATTEMPTS,
     MAX_SLOT_ATTEMPTS,
@@ -145,7 +145,7 @@ async def handle_turn(
 
     # --- Global interrupts override any in-progress flow (Section 4.2), unless this message
     # is simply answering the slot we just asked for. ---
-    if top_intent in GLOBAL_INTERRUPT_INTENTS and confidence >= CONFIDENCE_THRESHOLD and not pending_slot_answered:
+    if top_intent in GLOBAL_INTERRUPT_INTENTS and confidence >= settings_store.confidence_threshold() and not pending_slot_answered:
         state.reset_flow()
         state.intent = top_intent
 
@@ -162,7 +162,7 @@ async def handle_turn(
         return await _finalize(db, conversation, state, result, turn_number, top_intent, confidence)
 
     elif state.intent is None:
-        if confidence < CONFIDENCE_THRESHOLD:
+        if confidence < settings_store.confidence_threshold():
             if state.clarification_attempts < MAX_CLARIFICATION_ATTEMPTS:
                 state.clarification_attempts += 1
                 result = TurnResult(text=templates.CLARIFICATION_PROMPT, flow_complete=False)

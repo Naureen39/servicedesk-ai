@@ -33,6 +33,10 @@ dataset/synthetic/*
 .DS_Store
 Thumbs.db
 
+# Session scratch files (C: drive on this shared machine has no free space, so temp output
+# during development gets written here on D: instead of /tmp)
+/.scratch/
+
 # Local-only isolation notes (never committed)
 git_verify.md
 PROJECT_PLAN (1).md

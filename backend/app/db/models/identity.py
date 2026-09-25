@@ -11,6 +11,7 @@ from sqlalchemy import (
     DateTime,
     ForeignKey,
     Integer,
+    Numeric,
     String,
     UniqueConstraint,
 )
@@ -121,3 +122,18 @@ class AuditLog(Base):
     ip: Mapped[str | None] = mapped_column(String(64))
     user_agent: Mapped[str | None] = mapped_column(String(255))
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default="now()", index=True)
+
+
+class AppSettings(Base):
+    """Section 8.3 Admin: persisted, editable runtime settings (provider order, confidence
+    threshold, cache threshold, daily budgets). Singleton row (id=1), seeded by its migration."""
+
+    __tablename__ = "app_settings"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    llm_primary: Mapped[str] = mapped_column(String(20), nullable=False, default="groq")
+    confidence_threshold: Mapped[float] = mapped_column(Numeric(4, 3), nullable=False, default=0.55)
+    cache_similarity_threshold: Mapped[float] = mapped_column(Numeric(4, 3), nullable=False, default=0.92)
+    daily_budget_groq: Mapped[int] = mapped_column(Integer, nullable=False, default=900)
+    daily_budget_gemini: Mapped[int] = mapped_column(Integer, nullable=False, default=1400)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default="now()")

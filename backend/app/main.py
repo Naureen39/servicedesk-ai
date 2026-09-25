@@ -39,6 +39,14 @@ async def lifespan(app: FastAPI):
         await catalog_cache.refresh(db)
     logger.info("Vehicle/service catalog cache loaded")
 
+    # Section 8.3: the admin-editable app_settings row (provider order, confidence/cache
+    # thresholds, daily budgets), cached in-process the same way.
+    from app.services import settings_store
+
+    async with async_session_factory() as db:
+        await settings_store.refresh(db)
+    logger.info("App settings loaded")
+
     # Section 4.1 models used on every turn (sentiment, intent classifier): same reasoning as
     # the embedder above. Phase 6's tight per-turn latency budget is what surfaced these as
     # cold-start-on-first-request instead of a startup cost -- the first customer turn of the

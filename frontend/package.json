@@ -17,6 +17,8 @@
     "@radix-ui/react-toast": "^1.2.23",
     "@radix-ui/react-tooltip": "^1.2.16",
     "@ricky0123/vad-web": "^0.0.31",
+    "echarts": "^6.1.0",
+    "echarts-for-react": "^3.0.6",
     "leaflet": "^1.9.4",
     "onnxruntime-web": "^1.30.0",
     "react": "^19.2.8",
