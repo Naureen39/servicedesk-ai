@@ -1,0 +1,129 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500&display=swap");
+@import "tailwindcss";
+
+@theme {
+  /* Section 7.1 palette tokens */
+  --color-navy: #0b1f3a;
+  --color-steel: #1e3a5f;
+  --color-accent: #2563eb;
+  --color-success: #16a34a;
+  --color-warning: #f59e0b;
+  --color-danger: #dc2626;
+
+  --font-display: "Manrope", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+
+  /* Section 7.1 type scale */
+  --text-xs: 0.75rem;   /* 12 */
+  --text-sm: 0.875rem;  /* 14 */
+  --text-base: 1rem;    /* 16 */
+  --text-lg: 1.125rem;  /* 18 */
+  --text-xl: 1.25rem;   /* 20 */
+  --text-2xl: 1.5rem;   /* 24 */
+  --text-3xl: 1.875rem; /* 30 */
+  --text-4xl: 2.25rem;  /* 36 */
+  --text-5xl: 3rem;     /* 48 */
+  --text-6xl: 3.75rem;  /* 60 */
+
+  --radius-card: 12px;
+  --radius-input: 8px;
+
+  --container-page: 1280px;
+}
+
+:root {
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+body {
+  font-family: var(--font-body);
+  line-height: 1.5;
+  color: #0f172a;
+  background: #ffffff;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  line-height: 1.15;
+}
+
+.container-page {
+  max-width: var(--container-page);
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+@media (min-width: 640px) {
+  .container-page {
+    padding-inline: 1.5rem;
+  }
+}
+
+/* Section 7.1: "respect prefers-reduced-motion" */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.fade-up {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 250ms ease, transform 250ms ease;
+}
+
+.fade-up.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Section 7.6: visible skip link + focus rings for WCAG 2.1 AA */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  background: var(--color-accent);
+  color: white;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0 0 8px 0;
+  font-weight: 600;
+}
+
+.skip-link:focus {
+  left: 0;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.leaflet-container {
+  border-radius: var(--radius-card);
+}
+
+@keyframes accordion-down {
+  from { height: 0; }
+  to { height: var(--radix-accordion-content-height); }
+}
+
+@keyframes accordion-up {
+  from { height: var(--radix-accordion-content-height); }
+  to { height: 0; }
+}
+
+/* Chat widget markdown rendering (Section 7.5: "markdown-safe rendering") */
+.prose-chat p { margin: 0 0 0.5em; }
+.prose-chat p:last-child { margin-bottom: 0; }
+.prose-chat strong { font-weight: 700; }
+.prose-chat ul, .prose-chat ol { margin: 0.25em 0 0.5em 1.25em; }
+.prose-chat a { color: var(--color-accent); text-decoration: underline; }

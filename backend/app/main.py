@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import asyncio
+import logging
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -14,14 +16,50 @@ from app.core.exceptions import register_exception_handlers
 from app.core.logging import RequestIdMiddleware, configure_logging
 from app.core.rate_limit import limiter
 from app.core.security_headers import SecurityHeadersMiddleware
-from app.db.base import engine
+from app.db.base import async_session_factory, engine
+from app.services.embeddings import get_embedder, is_loaded
+from app.services.nlu import catalog_cache
 
 settings = get_settings()
+logger = logging.getLogger(__name__)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     configure_logging()
+    # Phase 3, item 1: load the embedding model once at startup (singleton), not lazily on
+    # the first request, so retrieval latency is consistent from the first real query.
+    logger.info("Loading embedding model %s", settings.embedding_model)
+    await asyncio.to_thread(get_embedder)
+    logger.info("Embedding model loaded")
+
+    # Section 4.1: slot extraction (make/model fuzzy matching, service-type matching) reads
+    # this cache; warm it at startup, same reasoning as the embedding model above.
+    async with async_session_factory() as db:
+        await catalog_cache.refresh(db)
+    logger.info("Vehicle/service catalog cache loaded")
+
+    # Section 4.1 models used on every turn (sentiment, intent classifier): same reasoning as
+    # the embedder above. Phase 6's tight per-turn latency budget is what surfaced these as
+    # cold-start-on-first-request instead of a startup cost -- the first customer turn of the
+    # day was previously the one paying for it.
+    from app.services.nlu import intent_classifier, sentiment
+
+    logger.info("Loading sentiment and intent classifier models")
+    await asyncio.to_thread(sentiment._load)
+    await asyncio.to_thread(intent_classifier._load)
+    logger.info("Sentiment and intent classifier models loaded")
+
+    # Phase 6 item 3/5: load STT/TTS models once at startup so the first real voice turn
+    # doesn't pay the model-load cost inside the DoD's per-turn latency budget.
+    from app.services.voice import stt as voice_stt
+    from app.services.voice import tts as voice_tts
+
+    logger.info("Loading voice STT/TTS models")
+    await asyncio.to_thread(voice_stt.warm_up)
+    await asyncio.to_thread(voice_tts.warm_up)
+    logger.info("Voice STT/TTS models loaded")
+
     yield
     await engine.dispose()
 
@@ -75,4 +113,9 @@ async def health() -> dict:
     except Exception as exc:  # pragma: no cover - depends on live infra
         db_status = f"error: {exc}"
 
-    return {"status": "ok", "database": db_status, "pgvector": pgvector_status}
+    return {
+        "status": "ok",
+        "database": db_status,
+        "pgvector": pgvector_status,
+        "embedding_model": "ok" if is_loaded() else "not_loaded",
+    }

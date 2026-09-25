@@ -41,7 +41,7 @@ class Settings(BaseSettings):
 
     # --- Voice (Phase 6) ---
     stt_model: str = "small.en"
-    tts_voice: str = ""
+    tts_voice: str = "af_heart"
 
     # --- CORS ---
     cors_origins: str = "http://localhost:5173"

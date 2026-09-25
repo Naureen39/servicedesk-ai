@@ -1,5 +1,6 @@
-.PHONY: setup data train migrate seed dev test lint e2e up down \
-        data-download data-catalog data-nhtsa data-intents data-synthetic data-load data-embed
+.PHONY: setup data train migrate seed dev test lint e2e up down eval-retrieval \
+        data-download data-catalog data-nhtsa data-intents data-synthetic data-load data-embed data-embed-intents \
+        data-scheduling-reference
 
 PY := .venv/Scripts/python.exe
 SCRIPTS := dataset/scripts
@@ -14,7 +15,7 @@ setup:
 	$(BACKEND_PY) -m pip install --upgrade pip
 	$(BACKEND_PY) -m pip install -e "$(BACKEND)[dev]"
 
-data: data-download data-catalog data-nhtsa data-intents data-synthetic data-load data-embed
+data: data-download data-catalog data-nhtsa data-intents data-synthetic data-load data-embed data-embed-intents data-scheduling-reference
 
 data-download:
 	$(PY) $(SCRIPTS)/download.py
@@ -37,8 +38,14 @@ data-load:
 data-embed:
 	$(PY) $(SCRIPTS)/embed_kb.py
 
+data-embed-intents:
+	$(PY) $(SCRIPTS)/embed_intents.py
+
+data-scheduling-reference:
+	$(PY) $(SCRIPTS)/build_scheduling_reference.py
+
 train:
-	@echo "Phase 4: intent classifier training (not yet implemented)"
+	cd $(BACKEND) && ../$(BACKEND_PY) scripts/train_intent_classifier.py
 
 migrate:
 	cd $(BACKEND) && ../$(BACKEND_PY) -m alembic upgrade head
@@ -60,6 +67,9 @@ lint:
 
 e2e:
 	@echo "Phase 9: Playwright E2E suite (not yet implemented)"
+
+eval-retrieval:
+	cd $(BACKEND) && ../$(BACKEND_PY) scripts/eval_retrieval.py
 
 up:
 	docker compose -f infra/docker-compose.yml up -d

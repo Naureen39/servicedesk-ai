@@ -19,7 +19,7 @@ from sqlalchemy import delete
 
 from app.core.security import hash_password
 from app.db.base import async_session_factory
-from app.db.models.assistant import Conversation, Escalation, Message
+from app.db.models.assistant import Conversation, Escalation, Message, ResponseCache
 from app.db.models.identity import AuditLog, MfaSecret, RefreshToken, User
 from app.main import app
 
@@ -33,6 +33,90 @@ async def _seed_rbac():
         permissions = await seed_permissions(db)
         await seed_roles(db, permissions)
         await db.commit()
+
+
+REPO_ROOT = Path(__file__).resolve().parents[2]
+
+
+@pytest_asyncio.fixture(scope="session", autouse=True)
+async def _seed_dialog_reference_data(_seed_rbac):
+    """Seeds the reference data the Phase 4 dialog manager reads: real locations/technicians/
+    service_catalog rows from dataset/reference/, a small curated vehicle_catalog and
+    recall_campaigns set for the scripted conversations, and real embedded kb_chunks (via the
+    actual embed_kb.py, run once against this test database)."""
+    import subprocess
+
+    import pandas as pd
+    from sqlalchemy import text
+
+    from app.services.nlu import catalog_cache
+
+    async with async_session_factory() as db:
+        for name, cols in [
+            ("locations", ["location_id", "name", "address", "city", "state", "zip", "latitude", "longitude",
+                            "timezone", "bay_count", "phone", "mon_open", "mon_close", "tue_open", "tue_close",
+                            "wed_open", "wed_close", "thu_open", "thu_close", "fri_open", "fri_close",
+                            "sat_open", "sat_close", "sun_open", "sun_close"]),
+            ("technicians", ["technician_id", "name", "location_id", "skill_level", "certifications",
+                              "shift_pattern", "hire_date", "efficiency_base"]),
+            ("service_catalog", ["code", "name", "category", "labor_hours_min", "labor_hours_max",
+                                  "parts_cost_min", "parts_cost_max", "duration_min", "bay_type", "skill_level"]),
+        ]:
+            df = pd.read_csv(REPO_ROOT / "dataset" / "reference" / f"{name}.csv", dtype={"zip": str})
+            if "hire_date" in df.columns:
+                df["hire_date"] = pd.to_datetime(df["hire_date"]).dt.date
+            df = df.astype(object).where(df.notna(), None)
+            col_list = ", ".join(cols)
+            placeholders = ", ".join(f":{c}" for c in cols)
+            for row in df.to_dict("records"):
+                await db.execute(
+                    text(f"INSERT INTO {name} ({col_list}) VALUES ({placeholders}) ON CONFLICT DO NOTHING"), row
+                )
+
+        vehicles = [
+            (2020, "Toyota", "Camry", "Camry"),
+            (2019, "Honda", "Civic", "Civic"),
+            (2021, "Ford", "F-150", "F-150"),
+            (2018, "Toyota", "Corolla", "Corolla"),
+        ]
+        for year, make, model, nhtsa_name in vehicles:
+            await db.execute(
+                text(
+                    "INSERT INTO vehicle_catalog (year, make, model, nhtsa_model_name) "
+                    "VALUES (:year, :make, :model, :nhtsa_name) ON CONFLICT DO NOTHING"
+                ),
+                {"year": year, "make": make, "model": model, "nhtsa_name": nhtsa_name},
+            )
+
+        await db.execute(
+            text(
+                """
+                INSERT INTO recall_campaigns
+                    (campaign_number, make, model, model_year, component, summary, consequence, remedy, report_date)
+                VALUES
+                    ('24V001000', 'TOYOTA', 'Camry', 2020, 'FUEL SYSTEM, GASOLINE:DELIVERY:FUEL PUMP',
+                     'The fuel pump may fail, causing the engine to stall.',
+                     'An engine stall while driving increases the risk of a crash.',
+                     'Dealers will replace the fuel pump free of charge.', '2024-01-15')
+                ON CONFLICT DO NOTHING
+                """
+            )
+        )
+        await db.commit()
+
+    for script in ["embed_kb.py", "build_scheduling_reference.py"]:
+        result = subprocess.run(
+            [str(REPO_ROOT / ".venv" / "Scripts" / "python.exe"), str(REPO_ROOT / "dataset" / "scripts" / script)],
+            cwd=str(REPO_ROOT / "dataset" / "scripts"),
+            env={**os.environ, "DATABASE_URL": "postgresql://postgres:postgres@localhost:55432/meridian_test"},
+            capture_output=True,
+            text=True,
+            timeout=180,
+        )
+        assert result.returncode == 0, f"{script} failed:\n{result.stdout}\n{result.stderr}"
+
+    async with async_session_factory() as db:
+        await catalog_cache.refresh(db)
 
 
 @pytest_asyncio.fixture(autouse=True)
@@ -49,6 +133,7 @@ async def _clean_mutable_tables():
         await db.execute(delete(Escalation))
         await db.execute(delete(Message))
         await db.execute(delete(Conversation))
+        await db.execute(delete(ResponseCache))
         await db.execute(delete(AuditLog))
         await db.execute(delete(RefreshToken))
         await db.execute(delete(MfaSecret))

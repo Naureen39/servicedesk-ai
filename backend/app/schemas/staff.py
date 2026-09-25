@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime
+from typing import Literal
 
 from pydantic import BaseModel, ConfigDict
 
@@ -43,12 +44,15 @@ class EscalationOut(BaseModel):
     created_at: datetime | None
     resolved_at: datetime | None
     summary: str | None
+    sla_breached: bool = False
+    """Section 5.3: "SLA breach alerts on the portal" -- computed at read time from
+    sla_due_at vs now(), true for any open/assigned/in_progress escalation past its SLA."""
 
     model_config = ConfigDict(from_attributes=True)
 
 
 class EscalationPatch(BaseModel):
-    status: str | None = None
+    status: Literal["open", "assigned", "in_progress", "resolved", "closed"] | None = None
     assigned_to: str | None = None
 
 

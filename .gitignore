@@ -23,8 +23,9 @@ dataset/synthetic/*
 !dataset/synthetic/.gitkeep
 !dataset/synthetic/*_sample.csv
 
-# Models
-models/
+# Downloaded/cached ML model weights (repo-root only -- NOT backend/app/db/models, which is
+# source code)
+/models/
 
 # Editors / OS
 .vscode/

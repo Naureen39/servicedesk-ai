@@ -31,6 +31,11 @@ from app.schemas.staff import (
     MessageOut,
 )
 from app.services.audit import record_audit
+from app.services.escalation_workflow import (
+    InvalidStatusTransitionError,
+    is_sla_breached,
+    validate_transition,
+)
 
 from .deps import CurrentUser, get_client_ip, location_filter, require_permission
 
@@ -84,11 +89,24 @@ async def get_conversation(
 
 @router.websocket("/portal/live")
 async def portal_live(websocket: WebSocket) -> None:
+    """Streams escalation events as they're created (Section 4.3: "push it to staff via
+    WebSocket"). Live conversation transcript streaming ships alongside the Phase 6 voice
+    pipeline; this phase wires the escalation feed, which is what the plan's own wording
+    calls out by name."""
+    from starlette.websockets import WebSocketDisconnect
+
+    from app.services.dialog.portal_feed import subscribe, unsubscribe
+
     await websocket.accept()
-    await websocket.send_json(
-        {"type": "info", "detail": "Live conversation streaming is wired up alongside the Phase 4 dialog engine"}
-    )
-    await websocket.close(code=4501, reason="live feed not implemented until Phase 4/6")
+    queue = subscribe()
+    try:
+        while True:
+            event = await queue.get()
+            await websocket.send_json(event)
+    except WebSocketDisconnect:
+        pass
+    finally:
+        unsubscribe(queue)
 
 
 @router.get("/escalations", response_model=list[EscalationOut])
@@ -100,7 +118,7 @@ async def list_escalations(
     offset: int = Query(default=0, ge=0),
     user: CurrentUser = Depends(require_permission(PERM_ESCALATIONS_READ)),
     db: AsyncSession = Depends(get_db),
-) -> list[Escalation]:
+) -> list[EscalationOut]:
     scoped_location_id = location_filter(user, location_id)
     stmt = select(Escalation).join(Conversation, Escalation.conversation_id == Conversation.conversation_id)
     if scoped_location_id is not None:
@@ -111,7 +129,12 @@ async def list_escalations(
         stmt = stmt.where(Escalation.priority == priority)
     stmt = stmt.order_by(Escalation.created_at.desc()).limit(limit).offset(offset)
     result = await db.execute(stmt)
-    return list(result.scalars().all())
+    return [
+        EscalationOut.model_validate(e, from_attributes=True).model_copy(
+            update={"sla_breached": is_sla_breached(e.status, e.sla_due_at)}
+        )
+        for e in result.scalars().all()
+    ]
 
 
 async def _load_scoped_escalation(db: AsyncSession, user: CurrentUser, escalation_id: str) -> Escalation:
@@ -138,11 +161,18 @@ async def patch_escalation(
     user: CurrentUser = Depends(require_permission(PERM_ESCALATIONS_WRITE)),
     db: AsyncSession = Depends(get_db),
     ip: str = Depends(get_client_ip),
-) -> Escalation:
+) -> EscalationOut:
     escalation = await _load_scoped_escalation(db, user, escalation_id)
 
     before = {"status": escalation.status, "assigned_to": escalation.assigned_to}
     changes = payload.model_dump(exclude_unset=True)
+
+    if "status" in changes:
+        try:
+            validate_transition(escalation.status, changes["status"])
+        except InvalidStatusTransitionError as exc:
+            raise AppError(409, str(exc), type_slug="https://meridian.example/problems/invalid-status-transition") from exc
+
     for field, value in changes.items():
         setattr(escalation, field, value)
     if changes.get("status") == "resolved" and escalation.resolved_at is None:
@@ -160,7 +190,9 @@ async def patch_escalation(
     )
     await db.commit()
     await db.refresh(escalation)
-    return escalation
+    return EscalationOut.model_validate(escalation, from_attributes=True).model_copy(
+        update={"sla_breached": is_sla_breached(escalation.status, escalation.sla_due_at)}
+    )
 
 
 @router.post("/escalations/{escalation_id}/reply", status_code=201)

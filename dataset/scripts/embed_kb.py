@@ -1,13 +1,18 @@
-"""Phase 1 support / Phase 3 dependency: chunk the knowledge base and embed it into pgvector.
+"""Phase 3: chunk the knowledge base and embed it into pgvector.
 
 Splits each Markdown file in dataset/reference/knowledge_base/ by heading, then into 300-500
-token chunks with 50 token overlap (approximated with a word-count heuristic since the exact
-tokenizer belongs to the embedding model loaded in Phase 3). Stores title, section, source
-path, content, and a content hash so re-embedding only touches changed documents (Section 3.5).
+token chunks with 50 token overlap (approximated with a word-count heuristic, since the exact
+tokenizer belongs to the embedding model). Stores title, section, source path, content, and a
+content hash per chunk.
 
-This script requires the `kb_chunks` table from the Phase 2 Alembic migrations and the
-sentence-transformers embedding model from Phase 3. When either is unavailable (for example
-on a clean Phase-1-only clone), it still performs chunking and writes the result to
+Re-embeds only changed documents (Section "Knowledge base admin page triggers re-embedding of
+changed documents only (content hash)"): each source file's whole-document hash is compared
+against `kb_documents.document_hash`; unchanged documents are left alone (their existing
+`kb_chunks` rows and embeddings are reused untouched), and only changed or new documents have
+their old chunks deleted and replaced.
+
+Requires DATABASE_URL and the sentence-transformers model. When either is unavailable (for
+example on a clean Phase-1-only clone), it still performs chunking and writes the result to
 dataset/processed/kb_chunks_preview.parquet so the chunking logic can be verified end to end
 without a live database or a downloaded model.
 """
@@ -98,68 +103,103 @@ def build_chunks() -> pd.DataFrame:
     return df
 
 
-def try_embed(df: pd.DataFrame) -> pd.DataFrame | None:
-    try:
-        from sentence_transformers import SentenceTransformer
-    except ImportError:
-        logger.warning(
-            "sentence-transformers not installed (Phase 3 dependency); skipping embedding, "
-            "chunk preview only."
-        )
-        return None
+def load_embedder():
+    from sentence_transformers import SentenceTransformer
 
     logger.info("Loading embedding model %s", EMBEDDING_MODEL_NAME)
-    model = SentenceTransformer(EMBEDDING_MODEL_NAME)
-    embeddings = model.encode(df["content"].tolist(), normalize_embeddings=True, show_progress_bar=True)
-    df = df.copy()
-    df["embedding"] = list(embeddings)
-    return df
+    return SentenceTransformer(EMBEDDING_MODEL_NAME, device="cpu")
 
 
-def try_upsert_pgvector(df: pd.DataFrame) -> bool:
-    database_url = os.environ.get("DATABASE_URL")
-    if not database_url:
-        logger.warning("DATABASE_URL not set; skipping pgvector upsert (Phase 2 dependency)")
-        return False
-    if "embedding" not in df.columns:
-        logger.warning("No embeddings computed; skipping pgvector upsert")
-        return False
+def embed_passages(model, texts: list[str]) -> list[list[float]]:
+    if not texts:
+        return []
+    vectors = model.encode(texts, normalize_embeddings=True, show_progress_bar=False)
+    return [v.tolist() for v in vectors]
 
-    try:
-        import psycopg
-    except ImportError:
-        logger.warning("psycopg not installed; skipping pgvector upsert")
-        return False
 
-    try:
-        with psycopg.connect(database_url) as conn:
-            with conn.cursor() as cur:
+def get_existing_document_hashes(conn) -> dict[str, str]:
+    with conn.cursor() as cur:
+        cur.execute("SELECT source_path, document_hash FROM kb_documents")
+        return dict(cur.fetchall())
+
+
+def sync_to_pgvector(df: pd.DataFrame, database_url: str) -> tuple[int, int]:
+    """Diffs by whole-document hash, re-embeds only changed/new documents.
+
+    Returns (documents_reembedded, documents_unchanged).
+    """
+    import psycopg
+    from pgvector.psycopg import register_vector
+
+    with psycopg.connect(database_url) as conn:
+        register_vector(conn)
+        with conn.cursor() as cur:
+            cur.execute("SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_name = 'kb_chunks')")
+            if not cur.fetchone()[0]:
+                logger.warning("kb_chunks table not found (run Phase 2 Alembic migrations first)")
+                return 0, 0
+
+        existing_hashes = get_existing_document_hashes(conn)
+
+        doc_hash_by_path = df.drop_duplicates("source_path").set_index("source_path")["document_hash"].to_dict()
+        changed_paths = [
+            path for path, doc_hash in doc_hash_by_path.items() if existing_hashes.get(path) != doc_hash
+        ]
+        unchanged_count = len(doc_hash_by_path) - len(changed_paths)
+
+        if not changed_paths:
+            logger.info("All %d documents unchanged (content hash match); nothing to re-embed", len(doc_hash_by_path))
+            return 0, unchanged_count
+
+        logger.info(
+            "%d document(s) changed or new, %d unchanged: %s",
+            len(changed_paths), unchanged_count, changed_paths,
+        )
+
+        changed_df = df[df["source_path"].isin(changed_paths)].reset_index(drop=True)
+        model = load_embedder()
+        embeddings = embed_passages(model, changed_df["content"].tolist())
+        changed_df = changed_df.copy()
+        changed_df["embedding"] = embeddings
+
+        with conn.cursor() as cur:
+            for path in changed_paths:
+                cur.execute("DELETE FROM kb_chunks WHERE source_path = %s", (path,))
+
+            for row in changed_df.itertuples():
                 cur.execute(
                     """
-                    SELECT EXISTS (
-                        SELECT FROM information_schema.tables WHERE table_name = 'kb_chunks'
-                    )
-                    """
+                    INSERT INTO kb_chunks (source_path, title, section, content, content_hash, embedding)
+                    VALUES (%s, %s, %s, %s, %s, %s)
+                    ON CONFLICT (content_hash) DO NOTHING
+                    """,
+                    (row.source_path, row.title, row.section, row.content, row.content_hash, row.embedding),
                 )
-                exists = cur.fetchone()[0]
-                if not exists:
-                    logger.warning("kb_chunks table not found (run Phase 2 Alembic migrations first)")
-                    return False
-                for row in df.itertuples():
-                    cur.execute(
-                        """
-                        INSERT INTO kb_chunks (source_path, title, section, content, content_hash, embedding)
-                        VALUES (%s, %s, %s, %s, %s, %s)
-                        ON CONFLICT (content_hash) DO NOTHING
-                        """,
-                        (row.source_path, row.title, row.section, row.content, row.content_hash, list(row.embedding)),
-                    )
-            conn.commit()
-        logger.info("Upserted %d chunks into kb_chunks", len(df))
-        return True
-    except Exception as exc:  # pragma: no cover - depends on live Phase 2 DB
-        logger.error("pgvector upsert failed: %s", exc)
-        return False
+
+            for path in changed_paths:
+                title = changed_df.loc[changed_df["source_path"] == path, "title"].iloc[0]
+                cur.execute(
+                    """
+                    INSERT INTO kb_documents (source_path, title, document_hash, updated_at)
+                    VALUES (%s, %s, %s, now())
+                    ON CONFLICT (source_path) DO UPDATE
+                        SET title = EXCLUDED.title,
+                            document_hash = EXCLUDED.document_hash,
+                            updated_at = now()
+                    """,
+                    (path, title, doc_hash_by_path[path]),
+                )
+
+            # Section 4.5, item 4: the semantic response cache is invalidated whenever the
+            # source KB document changes, since a cached answer may quote now-outdated
+            # pricing, hours, or policy text. The KB is small enough that clearing the whole
+            # cache on any change is simpler than tracking which cached answers cited which
+            # chunk, and costs nothing since cache entries are free to regenerate.
+            cur.execute("TRUNCATE TABLE response_cache")
+        conn.commit()
+
+    logger.info("Re-embedded %d document(s), %d unchanged; response_cache invalidated", len(changed_paths), unchanged_count)
+    return len(changed_paths), unchanged_count
 
 
 def main() -> int:
@@ -170,10 +210,18 @@ def main() -> int:
     df[preview_cols].to_parquet(PROCESSED_DIR / "kb_chunks_preview.parquet", index=False)
     logger.info("Wrote chunk preview to %s", PROCESSED_DIR / "kb_chunks_preview.parquet")
 
-    embedded = try_embed(df)
-    if embedded is not None:
-        try_upsert_pgvector(embedded)
+    database_url = os.environ.get("DATABASE_URL")
+    if not database_url:
+        logger.warning("DATABASE_URL not set; skipping pgvector sync (Phase 2 dependency)")
+        return 0
 
+    try:
+        import sentence_transformers  # noqa: F401
+    except ImportError:
+        logger.warning("sentence-transformers not installed (Phase 3 dependency); skipping pgvector sync")
+        return 0
+
+    sync_to_pgvector(df, database_url)
     return 0
 
 

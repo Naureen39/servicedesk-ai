@@ -79,6 +79,9 @@ book_service,can you fit me in for an oil change this Saturday
 book_service,I want to schedule maintenance for my car
 reschedule_appointment,I need to move my appointment {ref_code} to a different day
 reschedule_appointment,can you reschedule my appointment
+reschedule_appointment,I need to reschedule my appointment
+reschedule_appointment,I'd like to reschedule my appointment please
+reschedule_appointment,reschedule my appointment
 reschedule_appointment,I can't make my appointment on {date} can we change it
 reschedule_appointment,"my reference code is {ref_code}, I need a new time"
 reschedule_appointment,"something came up, can we push my appointment back"

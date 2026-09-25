@@ -1,0 +1,61 @@
+question,expected_doc
+What time does the Riverside location open on weekdays?,hours-and-locations.md
+Are you open on Sundays?,hours-and-locations.md
+What are Westerville's Saturday hours?,hours-and-locations.md
+Which holidays are you closed for?,hours-and-locations.md
+Can I drop off my car before you open?,hours-and-locations.md
+What's the phone number for the Northgate location?,hours-and-locations.md
+How many service bays does Riverside have?,hours-and-locations.md
+What is the address of the Riverside service center?,hours-and-locations.md
+How long is the bumper-to-bumper warranty?,warranty-coverage.md
+Does warranty cover routine oil changes?,warranty-coverage.md
+Is a recall repair covered even if my warranty expired?,warranty-coverage.md
+What does the powertrain warranty include?,warranty-coverage.md
+"I have an extended service contract, what should I bring to my appointment?",warranty-coverage.md
+What happens if my repair isn't warranty-eligible?,warranty-coverage.md
+How does Meridian Assist check for recalls?,recall-process.md
+Does a recall repair cost anything?,recall-process.md
+"My car shows a recall online, does that mean it hasn't been fixed yet?",recall-process.md
+Can you handle more than one open recall in a single visit?,recall-process.md
+Where does the recall data come from?,recall-process.md
+What is a safety recall exactly?,recall-process.md
+How often should I get an oil change with synthetic oil?,maintenance-schedule.md
+What's included in the 60000 mile service?,maintenance-schedule.md
+What counts as severe driving conditions?,maintenance-schedule.md
+When should I get my brakes inspected?,maintenance-schedule.md
+Do you send seasonal maintenance reminders?,maintenance-schedule.md
+What happens at the 90000 mile service?,maintenance-schedule.md
+Should I follow the interval in my owner's manual or this general guide?,maintenance-schedule.md
+How much does a synthetic oil change cost?,pricing-guide.md
+What's the price range for front brake pads?,pricing-guide.md
+Is there a diagnostic fee if I get the repair done the same visit?,pricing-guide.md
+How much is a four-wheel alignment?,pricing-guide.md
+Are the prices you give me final invoices?,pricing-guide.md
+How much for a 60K scheduled service?,pricing-guide.md
+Can I get a loaner car at the Westerville location?,loaner-and-shuttle.md
+What do I need to qualify for a loaner vehicle?,loaner-and-shuttle.md
+Do you offer a shuttle service?,loaner-and-shuttle.md
+Is there a rideshare credit if a loaner isn't available?,loaner-and-shuttle.md
+What amenities are in the customer waiting area?,loaner-and-shuttle.md
+How far does the shuttle service go?,loaner-and-shuttle.md
+What payment methods do you accept?,payment-and-financing.md
+Do you offer financing for expensive repairs?,payment-and-financing.md
+When is payment due for a repair?,payment-and-financing.md
+Will you call me before doing extra repair work?,payment-and-financing.md
+Do you have fleet accounts for businesses with multiple vehicles?,payment-and-financing.md
+Can I get a printed receipt?,payment-and-financing.md
+Do you accept Apple Pay?,payment-and-financing.md
+Is there a fee to cancel my appointment?,cancellation-and-no-show.md
+What counts as a no-show appointment?,cancellation-and-no-show.md
+Can I reschedule my appointment the same day?,cancellation-and-no-show.md
+Is there a no-show fee for a recall appointment?,cancellation-and-no-show.md
+What if I'm running late to my appointment?,cancellation-and-no-show.md
+How many no-shows before booking gets restricted?,cancellation-and-no-show.md
+Do you record my voice conversations with the assistant?,privacy-notice.md
+Is my personal information sent to NHTSA?,privacy-notice.md
+Do you send my phone number to the AI language model provider?,privacy-notice.md
+How long do you keep my conversation transcripts?,privacy-notice.md
+Can I have my contact info removed from marketing communications?,privacy-notice.md
+Who do I contact with privacy questions?,privacy-notice.md
+Is my audio recording stored after it's transcribed?,privacy-notice.md
+Does the warranty claims process require a written estimate first?,warranty-coverage.md
