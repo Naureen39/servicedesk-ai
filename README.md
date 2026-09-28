@@ -144,7 +144,7 @@ backend. Endpoint-group overview: [docs/api.md](docs/api.md).
 
 ## Testing and evaluation
 
-- Backend: 219+ pytest tests, at least 80 percent coverage of `app/services/`
+- Backend: 226+ pytest tests, at least 80 percent coverage of `app/services/`
   (`make test`, `backend/htmlcov/` for the HTML report).
 - NLU: accuracy, macro-F1, confusion matrix, escalation gate precision/recall in
   [docs/nlu-evaluation.md](docs/nlu-evaluation.md).
