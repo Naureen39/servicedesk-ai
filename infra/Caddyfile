@@ -1,0 +1,17 @@
+# Caddy terminates TLS with automatic HTTPS (a real cert via ACME/Let's Encrypt when DOMAIN is
+# a real public hostname pointed at this host; a self-signed cert for local/demo use), serves
+# the built frontend, and reverse-proxies the API and voice WebSocket to the backend.
+
+{$DOMAIN:localhost} {
+	encode gzip
+
+	# Covers both REST and the WebSocket routes (WS /api/v1/voice/session, WS
+	# /api/v1/portal/live), which all live under the same /api/v1 prefix.
+	handle /api/* {
+		reverse_proxy backend:8000
+	}
+
+	handle {
+		reverse_proxy frontend:8080
+	}
+}

@@ -20,6 +20,7 @@ from sqlalchemy import delete
 from app.core.security import hash_password
 from app.db.base import async_session_factory
 from app.db.models.assistant import Conversation, Escalation, Message, ResponseCache
+from app.db.models.business import Appointment
 from app.db.models.identity import AuditLog, MfaSecret, RefreshToken, User
 from app.main import app
 
@@ -138,6 +139,12 @@ async def _clean_mutable_tables():
         await db.execute(delete(Escalation))
         await db.execute(delete(Message))
         await db.execute(delete(Conversation))
+        # Appointments booked by one test run were never cleaned up here, so they piled up in
+        # this persistent test database across every session ever run against it. Booking
+        # always offers the earliest open slot, so that pileup concentrated on the nearest
+        # handful of days until real technician/bay capacity there was gone -- surfacing as
+        # unpredictable "no open slot" failures in unrelated booking tests days or weeks later.
+        await db.execute(delete(Appointment))
         await db.execute(delete(ResponseCache))
         await db.execute(delete(AuditLog))
         await db.execute(delete(RefreshToken))

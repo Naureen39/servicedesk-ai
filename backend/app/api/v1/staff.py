@@ -9,6 +9,7 @@ audit trail for real, which is the part Phase 2 owns.
 
 from __future__ import annotations
 
+import uuid
 from datetime import UTC, datetime
 
 from fastapi import APIRouter, Depends, Query, WebSocket
@@ -209,7 +210,11 @@ async def reply_to_escalation(
         select(Message).where(Message.conversation_id == escalation.conversation_id)
     )
     next_turn = len(list(count_result.scalars().all()))
-    reply_id = f"MSG-{escalation_id}-{next_turn:03d}"
+    # message_id is VARCHAR(20) (see app/db/models/assistant.py); every other message id in
+    # the app uses this same short random-hex form (app/services/dialog/manager.py,
+    # app/api/v1/public.py) rather than embedding the escalation id, which is long enough on
+    # its own to overflow the column and 500 on every reply past a two-digit turn count.
+    reply_id = f"MSG-{uuid.uuid4().hex[:10].upper()}"
     db.add(
         Message(
             message_id=reply_id,

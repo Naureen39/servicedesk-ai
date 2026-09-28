@@ -11,6 +11,15 @@ __pycache__/
 node_modules/
 dist/
 .vite/
+playwright-report/
+test-results/
+
+# Test/coverage output
+htmlcov/
+.coverage
+
+# Docker Compose backups volume
+infra/backups/
 
 # Env
 .env

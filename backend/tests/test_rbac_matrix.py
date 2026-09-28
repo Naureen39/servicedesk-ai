@@ -43,6 +43,22 @@ ENDPOINT_MATRIX = [
     ("GET", "/api/v1/admin/settings", "service_manager", "admin"),
     ("GET", "/api/v1/admin/audit-logs", "service_manager", "admin"),
     ("GET", "/api/v1/admin/kb", "service_advisor", "service_manager"),
+    ("GET", f"/api/v1/admin/kb/{DUMMY_ID}", "service_advisor", "service_manager"),
+    ("POST", "/api/v1/admin/kb", "service_advisor", "service_manager"),
+    ("PUT", f"/api/v1/admin/kb/{DUMMY_ID}", "service_advisor", "service_manager"),
+    ("POST", f"/api/v1/admin/kb/{DUMMY_ID}/publish", "service_advisor", "service_manager"),
+    ("PATCH", "/api/v1/admin/settings", "service_manager", "admin"),
+    ("GET", "/api/v1/analytics/revenue/top-services", "service_advisor", "analyst"),
+    ("GET", "/api/v1/analytics/revenue/by-pay-type", "service_advisor", "analyst"),
+    ("GET", "/api/v1/analytics/revenue/by-location", "service_advisor", "analyst"),
+    ("GET", "/api/v1/analytics/revenue/by-category", "service_advisor", "analyst"),
+    ("GET", "/api/v1/analytics/revenue/aro-distribution", "service_advisor", "analyst"),
+    ("GET", "/api/v1/analytics/operations/funnel", "service_advisor", "analyst"),
+    ("GET", "/api/v1/analytics/operations/heatmap", "service_advisor", "analyst"),
+    ("GET", "/api/v1/analytics/operations/wait-vs-promise", "service_advisor", "analyst"),
+    ("GET", "/api/v1/analytics/assistant/summary", "service_advisor", "analyst"),
+    ("GET", "/api/v1/analytics/recalls/customer-impact", "service_advisor", "analyst"),
+    ("GET", "/api/v1/analytics/recalls/customer-impact/export.csv", "service_advisor", "analyst"),
 ]
 
 

@@ -54,19 +54,23 @@ seed:
 	cd $(BACKEND) && ../$(BACKEND_PY) scripts/seed.py
 
 dev:
-	cd $(BACKEND) && ../$(BACKEND_PY) -m uvicorn app.main:app --reload
-	@echo "Phase 0: frontend dev server (not yet implemented)"
+	trap 'kill 0' EXIT; \
+	(cd $(BACKEND) && ../$(BACKEND_PY) -m uvicorn app.main:app --reload) & \
+	(cd frontend && npm run dev) & \
+	wait
 
 test:
 	$(PY) -m pytest $(SCRIPTS)/tests -q
 	cd $(BACKEND) && ../$(BACKEND_PY) -m pytest tests -q
+	cd frontend && npm test
 
 lint:
 	$(PY) -m ruff check dataset/scripts
 	$(BACKEND_PY) -m ruff check $(BACKEND)/app $(BACKEND)/tests $(BACKEND)/scripts
+	cd frontend && npm run lint
 
 e2e:
-	@echo "Phase 9: Playwright E2E suite (not yet implemented)"
+	cd frontend && npx playwright test
 
 eval-retrieval:
 	cd $(BACKEND) && ../$(BACKEND_PY) scripts/eval_retrieval.py

@@ -12,10 +12,11 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
-from sqlalchemy import select
+from sqlalchemy import delete, select
 
 from app.db.base import async_session_factory
 from app.db.models.identity import AppSettings
+from app.db.models.knowledge import KbChunk, KbDocument
 from app.services import settings_store
 from app.services.llm.router import LLMRouter
 
@@ -83,37 +84,49 @@ async def test_kb_create_update_publish_round_trip(client, auth_headers):
     token = await login(client, manager.email, "pw")
     headers = auth_headers(token)
 
-    create_resp = await client.post(
-        "/api/v1/admin/kb",
-        json={"source_path": "test-phase8-doc.md", "title": "Test Phase 8 Doc", "content": "# Test Phase 8 Doc\n\nSome real content about oil changes."},
-        headers=headers,
-    )
-    assert create_resp.status_code == 201, create_resp.text
-    doc = create_resp.json()
-    assert doc["content"].startswith("# Test Phase 8 Doc")
-    doc_id = doc["id"]
+    # This endpoint writes a real file to dataset/reference/knowledge_base/, outside any DB
+    # transaction the test framework can roll back -- if an assertion below failed before the
+    # unlink ran, the stray file would make every future run of this test fail with a 409
+    # "already exists" conflict, so the cleanup must run even when the test fails partway.
+    doc_path = REPO_ROOT / "dataset" / "reference" / "knowledge_base" / "test-phase8-doc.md"
+    try:
+        create_resp = await client.post(
+            "/api/v1/admin/kb",
+            json={"source_path": "test-phase8-doc.md", "title": "Test Phase 8 Doc", "content": "# Test Phase 8 Doc\n\nSome real content about oil changes."},
+            headers=headers,
+        )
+        assert create_resp.status_code == 201, create_resp.text
+        doc = create_resp.json()
+        assert doc["content"].startswith("# Test Phase 8 Doc")
+        doc_id = doc["id"]
 
-    get_resp = await client.get(f"/api/v1/admin/kb/{doc_id}", headers=headers)
-    assert get_resp.status_code == 200
-    assert "oil changes" in get_resp.json()["content"]
+        get_resp = await client.get(f"/api/v1/admin/kb/{doc_id}", headers=headers)
+        assert get_resp.status_code == 200
+        assert "oil changes" in get_resp.json()["content"]
 
-    update_resp = await client.put(
-        f"/api/v1/admin/kb/{doc_id}",
-        json={"content": "# Test Phase 8 Doc\n\nUpdated content about tire rotations."},
-        headers=headers,
-    )
-    assert update_resp.status_code == 200
-    assert "tire rotations" in update_resp.json()["content"]
+        update_resp = await client.put(
+            f"/api/v1/admin/kb/{doc_id}",
+            json={"content": "# Test Phase 8 Doc\n\nUpdated content about tire rotations."},
+            headers=headers,
+        )
+        assert update_resp.status_code == 200
+        assert "tire rotations" in update_resp.json()["content"]
 
-    publish_resp = await client.post(f"/api/v1/admin/kb/{doc_id}/publish", headers=headers)
-    assert publish_resp.status_code == 200, publish_resp.text
-    result = publish_resp.json()
-    assert result["unchanged"] is False
-    assert result["chunk_count"] >= 1
+        publish_resp = await client.post(f"/api/v1/admin/kb/{doc_id}/publish", headers=headers)
+        assert publish_resp.status_code == 200, publish_resp.text
+        result = publish_resp.json()
+        assert result["unchanged"] is False
+        assert result["chunk_count"] >= 1
 
-    # Publishing again with no further edit should be a real no-op (content hash unchanged).
-    republish_resp = await client.post(f"/api/v1/admin/kb/{doc_id}/publish", headers=headers)
-    assert republish_resp.json()["unchanged"] is True
-
-    # Cleanup: real file on disk, written by this test.
-    (REPO_ROOT / "dataset" / "reference" / "knowledge_base" / "test-phase8-doc.md").unlink(missing_ok=True)
+        # Publishing again with no further edit should be a real no-op (content hash unchanged).
+        republish_resp = await client.post(f"/api/v1/admin/kb/{doc_id}/publish", headers=headers)
+        assert republish_resp.json()["unchanged"] is True
+    finally:
+        # Delete by source_path, not just the id captured above -- if the endpoint call itself
+        # never returned (e.g. the process was killed mid-test), doc_id was never bound, so
+        # cleanup must be able to find and remove the row without it.
+        doc_path.unlink(missing_ok=True)
+        async with async_session_factory() as cleanup_db:
+            await cleanup_db.execute(delete(KbChunk).where(KbChunk.source_path.like("%test-phase8-doc.md")))
+            await cleanup_db.execute(delete(KbDocument).where(KbDocument.source_path.like("%test-phase8-doc.md")))
+            await cleanup_db.commit()
